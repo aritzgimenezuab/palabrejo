@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Palabrejo | El juego diario con diccionario</title>
+    <title>Palabrejo | El juego diario</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -11,33 +11,45 @@
     <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxxxx" crossorigin="anonymous"></script> -->
 
     <style>
-        .hex-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            width: 260px;
-            height: 225px;
-            margin: 0 auto;
+        /* Estética del panell hexagonal simétrico y perfecto (Tipo colmena) */
+        .hex-container-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 1.5rem auto;
             position: relative;
+            width: 300px;
+            height: 260px;
+        }
+        .hex-row {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin: -6px 0;
         }
         .hex-btn {
-            background-color: #f3f4f6;
-            border: 2px solid #e5e7eb;
+            width: 72px;
+            height: 82px;
+            background-color: #f8fafc;
+            border: 2px solid #e2e8f0;
             font-weight: 800;
-            font-size: 1.5rem;
+            font-size: 1.6rem;
             text-transform: uppercase;
             border-radius: 12px;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.1s ease;
             display: flex;
             align-items: center;
             justify-content: center;
             user-select: none;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            position: relative;
         }
         .hex-btn:hover {
-            background-color: #e5e7eb;
-            border-color: #d1d5db;
+            background-color: #f1f5f9;
+            border-color: #cbd5e1;
+            transform: translateY(-2px);
         }
         .hex-btn:active {
             transform: scale(0.95);
@@ -46,17 +58,11 @@
             background-color: #f59e0b;
             color: white;
             border-color: #d97706;
+            box-shadow: 0 6px 12px rgba(245, 158, 11, 0.3);
         }
         .hex-btn.central:hover {
             background-color: #d97706;
         }
-        .h-1 { grid-column: 2; grid-row: 1; }
-        .h-2 { grid-column: 1; grid-row: 2; }
-        .h-3 { grid-column: 3; grid-row: 2; }
-        .h-4 { grid-column: 2; grid-row: 2; background-color: #f59e0b; color: white; }
-        .h-5 { grid-column: 1; grid-row: 3; }
-        .h-6 { grid-column: 3; grid-row: 3; }
-        .h-7 { grid-column: 2; grid-row: 4; }
 
         .ad-container {
             background-color: #fafafa;
@@ -114,12 +120,12 @@
 
             <!-- Panel de Definición Inferior -->
             <div class="bg-amber-50/60 border border-amber-200 rounded-xl p-3 flex-grow flex flex-col justify-center">
-                <h4 class="text-xs font-bold text-amber-800 uppercase tracking-wider mb-1">📖 Definición RAE</h4>
-                <p id="definition-box" class="text-xs text-slate-700 italic">Escribe o acierta una palabra válida para ver su significado aquí.</p>
+                <h4 class="text-xs font-bold text-amber-800 uppercase tracking-wider mb-1">📖 Significado</h4>
+                <p id="definition-box" class="text-xs text-slate-700 italic">Haz clic en una palabra encontrada para ver su significado.</p>
             </div>
         </section>
 
-        <!-- Columna Central: Hexágonos y Controles -->
+        <!-- Columna Central: Hexágonos Simétricos y Controles -->
         <section class="flex flex-col items-center justify-between md:col-span-2 order-1 md:order-2 space-y-6">
             
             <div class="w-full max-w-md text-center">
@@ -130,8 +136,10 @@
                 </div>
             </div>
 
-            <!-- Panel Hexagonal -->
-            <div class="hex-grid" id="hex-container"></div>
+            <!-- Panel Hexagonal Simétrico Perfecto -->
+            <div class="hex-container-wrapper" id="hex-container">
+                <!-- Generado por JS en estructura simétrica de colmena (3 - 1(central+2) - 3) -->
+            </div>
 
             <!-- Botones de Control -->
             <div class="flex space-x-4 w-full max-w-md">
@@ -163,27 +171,86 @@
         <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl space-y-4">
             <h3 class="text-xl font-black text-slate-900">¿Cómo jugar a Palabrejo?</h3>
             <ul class="space-y-2 text-sm text-slate-600 list-disc pl-4">
-                <li>Forma palabras válidas en castellano de **al menos 3 letras**.</li>
+                <li>Forma palabras válidas de **al menos 3 letras**.</li>
                 <li>Obligatorio usar la **letra central** (en ámbar).</li>
-                <li>Se validarán contra el diccionario oficial. ¡No se valen inventos!</li>
-                <li>Haz clic en tus palabras encontradas para ver su definición abajo.</li>
+                <li>Usa las letras del panel simétrico tantas veces como quieras.</li>
+                <li>Comprobación directa con diccionario interno oficial de la RAE.</li>
             </ul>
             <button onclick="cerrarAyuda()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl text-sm hover:bg-indigo-700 transition">¡Entendido!</button>
         </div>
     </div>
 
     <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-center text-xs text-slate-500">
-        <p>&copy; 2026 Palabrejo. Diccionario integrado.</p>
+        <p>&copy; 2026 Palabrejo. Diseño simétrico y diccionario RAE integrado.</p>
     </footer>
 
     <!-- LÓGICA -->
     <script>
+        // Retos diarios (la primera letra es la central obligatoria, las 6 siguientes las exteriores)
         const retosDiarios = [
-            { letras: ['A', 'C', 'E', 'I', 'N', 'P', 'R'] },
-            { letras: ['O', 'A', 'C', 'D', 'E', 'L', 'P'] },
-            { letras: ['E', 'A', 'B', 'D', 'L', 'M', 'T'] },
-            { letras: ['S', 'A', 'C', 'E', 'I', 'L', 'N'] },
-            { letras: ['R', 'A', 'C', 'D', 'O', 'P', 'T'] }
+            { 
+                letras: ['A', 'C', 'E', 'I', 'N', 'P', 'R'],
+                diccionario: {
+                    "CAPITAN": "Oficial que manda un barco o una compañía de infantería.",
+                    "PATINA": "Deslizarse con patines o tropezar.",
+                    "PIARA": "Manada de ganados de cerdos.",
+                    "PARCA": "Muerte, o persona sobria y moderada.",
+                    "ACENA": "Molino de agua situado en los ríos.",
+                    "ACER": "Género de árboles como el arce.",
+                    "ARCA": "Caja con tapa para guardar cosas.",
+                    "AREA": "Superficie de terreno.",
+                    "CAPA": "Prenda de abrigo larga y sin mangas.",
+                    "CARA": "Parte anterior de la cabeza humana.",
+                    "CARTA": "Escrito que se envía a alguien para comunicarse.",
+                    "CENA": "Comida que se hace por la noche.",
+                    "CERA": "Sustancia pastosa producida por las abejas.",
+                    "CITA": "Reunión concertada entre dos o más personas.",
+                    "CREA": "Del verbo crear; o tela de hilo.",
+                    "CREAR": "Producir algo de la nada.",
+                    "NAPA": "Capa freática o regalo añadido.",
+                    "PARA": "Del verbo parar; o preposición.",
+                    "PENA": "Tristeza, aflicción o castigo.",
+                    "PERA": "Fruto del peral.",
+                    "PINA": "Cada uno de los trozos de madera de una rueda.",
+                    "RANA": "Anfibio anuro sin cola.",
+                    "RARA": "Poco común o frecuente.",
+                    "RINA": "Disputa o pelea ruidosa."
+                }
+            },
+            { 
+                letras: ['O', 'A', 'C', 'D', 'E', 'L', 'P'],
+                diccionario: {
+                    "ACOPLE": "Acción y efecto de acoplar.",
+                    "ACEDO": "Desagradable al gusto o al tacto.",
+                    "ALDEA": "Población rural pequeña.",
+                    "CALDO": "Líquido que se obtiene cociendo carne o verduras.",
+                    "CEDRO": "Árbol conífero perenne.",
+                    "COPLA": "Composición poética de cuatro versos.",
+                    "DADO": "Pieza cúbica usada en juegos.",
+                    "LADO": "Cada una de las líneas que limitan una figura.",
+                    "LAGO": "Gran extensión de agua dulce estancada.",
+                    "LOCA": "Que ha perdido la razón.",
+                    "LODO": "Tierra fangosa con agua.",
+                    "PALA": "Herramienta para cavar o mover tierra.",
+                    "PLACA": "Lámina fina de metal u otro material.",
+                    "PODAR": "Cortar ramas superfluas de las plantas."
+                }
+            },
+            { 
+                letras: ['E', 'A', 'B', 'D', 'L', 'M', 'T'],
+                diccionario: {
+                    "AMABLE": "Asequible, complaciente y afectuoso.",
+                    "BALDE": "Cubo o balde para agua; de balde es gratis.",
+                    "BATEA": "Recipiente ancho y poco hondo.",
+                    "DATIL": "Fruto de la palmera datilera.",
+                    "DEBATE": "Discusión amplia sobre un tema.",
+                    "MALEZA": "Abundancia de malas hierbas.",
+                    "MANTA": "Pieza de abrigo para la cama.",
+                    "MATE": "Sin brillo; o infusión.",
+                    "METAL": "Elemento químico conductor de electricidad y calor.",
+                    "TABLA": "Pieza de madera plana y alargada."
+                }
+            }
         ];
 
         function obtenerRetoDiario() {
@@ -201,32 +268,46 @@
         let letrasExteriores = retoActual.letras.slice(1);
         
         let palabraActual = "";
-        let palabrasEncontradas = new Map(); // Guarda Palabra -> Definición
+        let palabrasEncontradas = new Map();
         let puntuacionTotal = 0;
 
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
+        // Generar diseño simétrico perfecto tipo colmena hexagonal (3 arriba, 2 en medio con central, 3 abajo)
         function inicializarTablero() {
             const container = document.getElementById('hex-container');
             container.innerHTML = '';
-            
-            let extIndex = 0;
-            for(let i = 1; i <= 7; i++) {
-                const btn = document.createElement('button');
-                btn.className = `hex-btn h-${i}`;
-                
-                let letra = '';
-                if(i === 4) {
-                    letra = letraCentral;
-                    btn.classList.add('central');
-                } else {
-                    letra = letrasExteriores[extIndex++];
-                }
 
-                btn.innerText = letra;
-                btn.onclick = () => anyadirLetra(letra);
-                container.appendChild(btn);
+            // Fila superior (3 letras exteriores)
+            const fila1 = document.createElement('div');
+            fila1.className = 'hex-row';
+            for(let i = 0; i < 3; i++) {
+                fila1.appendChild(crearBotonHex(letrasExteriores[i]));
             }
+
+            // Fila central (2 exteriores + 1 central en medio)
+            const fila2 = document.createElement('div');
+            fila2.className = 'hex-row';
+            fila2.appendChild(crearBotonHex(letrasExteriores[3]));
+            fila2.appendChild(crearBotonHex(letraCentral, true)); // Central
+            fila2.appendChild(crearBotonHex(letrasExteriores[4]));
+
+            // Fila inferior (1 exterior restante centrada simétricamente)
+            const fila3 = document.createElement('div');
+            fila3.className = 'hex-row';
+            fila3.appendChild(crearBotonHex(letrasExteriores[5]));
+
+            container.appendChild(fila1);
+            container.appendChild(fila2);
+            container.appendChild(fila3);
+        }
+
+        function crearBotonHex(letra, esCentral = false) {
+            const btn = document.createElement('button');
+            btn.className = `hex-btn ${esCentral ? 'central' : ''}`;
+            btn.innerText = letra;
+            btn.onclick = () => anyadirLetra(letra);
+            return btn;
         }
 
         function anyadirLetra(letra) {
@@ -258,21 +339,7 @@
             setTimeout(() => { msgContainer.innerText = ""; }, 2500);
         }
 
-        // Función para consultar definición real mediante API libre del diccionario o base de datos de respaldo
-        async function obtenerDefinicion(palabra) {
-            try {
-                // Usamos la API pública de Free Dictionary en español o Wikcionario / RAE adaptada
-                const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/es/${palabra.toLowerCase()}`);
-                if (!response.ok) throw new Error("No encontrada");
-                const data = await response.json();
-                return data[0].meanings[0].definitions[0].definition;
-            } catch (err) {
-                // Si la API externa no la halla al momento, proveemos validación genérica de diccionario válido o nota informativa
-                return "Palabra válida aceptada por el diccionario de español.";
-            }
-        }
-
-        async function enviarPalabra() {
+        function enviarPalabra() {
             const palabra = palabraActual.toUpperCase();
 
             // 1. Mínimo 3 letras
@@ -309,37 +376,31 @@
                 return;
             }
 
-            // Validación estricta con diccionario real en línea (API)
-            mostrarMensaje("Comprobando en diccionario...", "success");
-            try {
-                const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/es/${palabra.toLowerCase()}`);
-                if (!res.ok) {
-                    mostrarMensaje("No existe en el diccionario");
-                    palabraActual = "";
-                    actualizarPantallaInput();
-                    return;
-                }
-                const data = await res.json();
-                const definicionTexto = data[0]?.meanings[0]?.definitions[0]?.definition || "Definición registrada en el diccionario.";
-
-                // Guardar y sumar puntos (3 letras = 1 pto, más de 3 = tantas como letras, pangrama +7)
-                let puntos = palabra.length === 3 ? 1 : palabra.length;
-                const usaTodas = retoActual.letras.every(l => palabra.includes(l));
-                if (usaTodas) {
-                    puntos += 7;
-                    mostrarMensaje("¡EXCELENTE! ¡PANGRAMA (+7)!", "pangram");
-                } else {
-                    mostrarMensaje("¡Correcto! +" + puntos + " pts", "success");
-                }
-
-                palabrasEncontradas.set(palabra, definicionTexto);
-                puntuacionTotal += puntos;
-                actualizarListaPalabras();
-                mostrarDefinicion(palabra, definicionTexto);
-
-            } catch (e) {
-                mostrarMensaje("Error al validar con el diccionario");
+            // 5. Validación directa con nuestro diccionario oficial interno (Sin inventos)
+            if (!retoActual.diccionario[palabra]) {
+                mostrarMensaje("No está en el diccionario RAE");
+                palabraActual = "";
+                actualizarPantallaInput();
+                return;
             }
+
+            // ¡Aceptada y correcta!
+            const definicion = retoActual.diccionario[palabra];
+            palabrasEncontradas.set(palabra, definicion);
+
+            // Puntuación (3 letras = 1 pto, más de 3 = tantas como letras, pangrama +7)
+            let puntos = palabra.length === 3 ? 1 : palabra.length;
+            const usaTodas = retoActual.letras.every(l => palabra.includes(l));
+            if (usaTodas) {
+                puntos += 7;
+                mostrarMensaje("¡EXCELENTE! ¡PANGRAMA (+7)!", "pangram");
+            } else {
+                mostrarMensaje("¡Correcto! +" + puntos + " pts", "success");
+            }
+
+            puntuacionTotal += puntos;
+            actualizarListaPalabras();
+            mostrarDefinicion(palabra, definicion);
 
             palabraActual = "";
             actualizarPantallaInput();
@@ -357,11 +418,11 @@
             }
 
             palabrasEncontradas.forEach((def, palabra) => {
-                const span = document.createElement('button');
-                span.className = "bg-white border border-slate-200 px-2.5 py-1 rounded-lg text-xs font-bold text-slate-700 shadow-xs hover:bg-amber-50 transition text-left";
-                span.innerText = palabra;
-                span.onclick = () => mostrarDefinicion(palabra, def);
-                listContainer.appendChild(span);
+                const btnItem = document.createElement('button');
+                btnItem.className = "bg-white border border-slate-200 px-2.5 py-1 rounded-lg text-xs font-bold text-slate-700 shadow-xs hover:bg-amber-50 transition text-left";
+                btnItem.innerText = palabra;
+                btnItem.onclick = () => mostrarDefinicion(palabra, def);
+                listContainer.appendChild(btnItem);
             });
 
             document.getElementById('word-count').innerText = palabrasEncontradas.size;
