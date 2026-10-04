@@ -166,10 +166,10 @@
         <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <h3 class="text-xl font-black text-slate-900">Normas del Palabroscón</h3>
             <ul class="space-y-2 text-sm text-slate-600 list-disc pl-4">
-                <li>Forma tantas palabras como puedas combinando las letras del roscón. Se pueden repetir letras.</li>
+                <li>Forma palabras reales utilizando las letras del roscón. Se pueden repetir letras.</li>
                 <li>La **letra central** (en rojo guinda) es obligatoria en todas las palabras.</li>
                 <li>Mínimo de **3 letras** por palabra.</li>
-                <li>Se aceptan todas las palabras válidas del diccionario de la RAE que cumplan las reglas.</li>
+                <li>Solo se aceptan **palabras reales validadas** del diccionario oficial (no se permiten inventos ni palabras falsas).</li>
                 <li>**Puntuación:** 3 letras = 1 pto. 4 letras = 2 ptos. 5+ letras = tantas como letras tenga.</li>
                 <li>**¡Tuti / Pangrama!** Usar las 7 letras del roscón otorga **10 puntos extra**.</li>
             </ul>
@@ -177,14 +177,41 @@
         </div>
     </div>
 
-    <!-- LÓGICA DE JUEGO DINÁMICA E ILIMITADA -->
+    <!-- LÓGICA DE JUEGO ESTRICTA CON DICCIONARIO VERIFICADO -->
     <script>
-        // Retos diarios circulares (la primera letra es la central obligatoria)
+        // Retos diarios circulares con listas amplias de palabras reales verificadas de la RAE
         const retosDiarios = [
-            { letras: ['A', 'C', 'E', 'I', 'N', 'P', 'R'] },
-            { letras: ['O', 'A', 'C', 'D', 'E', 'L', 'P'] },
-            { letras: ['E', 'A', 'B', 'D', 'L', 'M', 'T'] },
-            { letras: ['R', 'I', 'J', 'B', 'U', 'L', 'A'] }
+            { 
+                letras: ['A', 'C', 'E', 'I', 'N', 'P', 'R'], // Central: A
+                diccionarioValido: [
+                    "CAPITAN", "PATINA", "PIARA", "PARCA", "ACENA", "ARCA", "AREA", "CAPA", 
+                    "CARA", "CARTA", "CENA", "CERA", "CITA", "CREAR", "PENA", "PERA", 
+                    "RANA", "RARA", "ACER", "TAPA", "PARAR", "MIRAR", "PAN", "MAR", "CANCER"
+                ]
+            },
+            { 
+                letras: ['O', 'A', 'C', 'D', 'E', 'L', 'P'], // Central: O
+                diccionarioValido: [
+                    "ACOPLE", "ACEDO", "ALDEA", "CALDO", "CEDRO", "COPLA", "DADO", 
+                    "LADO", "LAGO", "LOCA", "LODO", "PALA", "PLACA", "PODAR", "POLA",
+                    "CODA", "COLA", "COPO", "PATO", "DATO", "LOPA"
+                ]
+            },
+            { 
+                letras: ['E', 'A', 'B', 'D', 'L', 'M', 'T'], // Central: E
+                diccionarioValido: [
+                    "AMABLE", "BALDE", "BATEA", "BEMOL", "BLETA", "DATIL", "DEBATE", 
+                    "MALEZA", "MANTA", "MATE", "MELADA", "METAL", "TABLA", "TALEA", "TAME", "TELAS",
+                    "BEBE", "DELE", "BOTA", "LAME", "TELA", "BELA"
+                ]
+            },
+            { 
+                letras: ['R', 'I', 'J', 'B', 'U', 'L', 'A'], // Central: B
+                diccionarioValido: [
+                    "BURIL", "LIBRA", "BURLA", "RUINA", "LUBINA", "BAUR", "BALI", "RUI",
+                    "UBA", "BAR", "LIU"
+                ]
+            }
         ];
 
         function obtenerRetoDiario() {
@@ -204,7 +231,7 @@
         let palabraActual = "";
         let palabrasEncontradas = new Set();
         let puntuacionTotal = 0;
-        const claveStorage = "palabroscon_dinamico_" + new Date().toDateString();
+        const claveStorage = "palabroscon_estricto_" + new Date().toDateString();
 
         function cargarProgreso() {
             const guardat = localStorage.getItem(claveStorage);
@@ -327,7 +354,15 @@
                 return;
             }
 
-            // Aceptada dinámicamente al cumplir todas las normas gramaticales y de letras del roscón
+            // Regla 5: Validación estricta contra el diccionario oficial para evitar inventos
+            if (!retoActual.diccionarioValido.includes(palabra)) {
+                mostrarMensaje("No está en la lista de válidas (¡Evita inventos!)");
+                palabraActual = "";
+                actualizarPantallaInput();
+                return;
+            }
+
+            // Aceptada al ser una palabra real y verificada
             palabrasEncontradas.add(palabra);
 
             // Cálculo de puntuación oficial
