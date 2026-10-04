@@ -10,14 +10,12 @@
     <!-- ==========================================
          CONFIGURACIÓN DE GOOGLE ADSENSE (Opcional)
          Sustituye 'ca-pub-xxxxxxxxxxxxxxxx' por tu ID de editor real 
-         cuando te aprueben la cuenta en AdSense.
          ========================================== -->
     <!-- 
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxxxx" crossorigin="anonymous"></script>
     -->
 
     <style>
-        /* Estilos personalizados para el panel hexagonal del juego */
         .hex-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -57,16 +55,14 @@
         .hex-btn.central:hover {
             background-color: #d97706;
         }
-        /* Posicionamiento del layout hexagonal */
         .h-1 { grid-column: 2; grid-row: 1; }
         .h-2 { grid-column: 1; grid-row: 2; }
         .h-3 { grid-column: 3; grid-row: 2; }
-        .h-4 { grid-column: 2; grid-row: 2; background-color: #f59e0b; color: white; } /* Central */
+        .h-4 { grid-column: 2; grid-row: 2; background-color: #f59e0b; color: white; }
         .h-5 { grid-column: 1; grid-row: 3; }
         .h-6 { grid-column: 3; grid-row: 3; }
         .h-7 { grid-column: 2; grid-row: 4; }
 
-        /* Contenedor de anuncios AdSense estilizado */
         .ad-container {
             background-color: #fafafa;
             border: 1px dashed #cbd5e1;
@@ -78,11 +74,9 @@
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans antialiased flex flex-col min-h-screen">
 
-    <!-- ESPACIO ADSENSE SUPERIOR (Leaderboard / Banner Horizontal) -->
-    <!-- Este espacio está diseñado para colocarse arriba sin molitar la interacción -->
+    <!-- ESPACIO ADSENSE SUPERIOR -->
     <div class="max-w-4xl mx-auto px-4 my-2 w-full no-print">
         <div class="ad-container rounded-xl p-3 text-xs uppercase tracking-wider">
-            <!-- PEGA AQUÍ TU BLOQUE DE ANUNCIOS DE GOOGLE ADSENSE -->
             <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-xxxxxxxxxxxxxxxx" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins> <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
             [ Espacio Publicitario Google AdSense - Banner Superior ]
         </div>
@@ -108,17 +102,14 @@
         <section class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col order-2 md:order-1">
             <div class="flex justify-between items-center mb-3">
                 <h3 class="font-bold text-sm text-slate-900">Palabras encontradas</h3>
-                <span id="word-count" class="text-xs font-bold bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full">0 / 0</span>
+                <span id="word-count" class="text-xs font-bold bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full">0</span>
             </div>
             
-            <!-- Rango / Nivel actual -->
+            <!-- Puntuación acumulada -->
             <div class="mb-4 bg-slate-50 p-3 rounded-xl border border-slate-100">
                 <div class="flex justify-between text-xs mb-1">
-                    <span class="text-slate-500">Rango:</span>
-                    <span id="current-rank" class="font-bold text-amber-600">Novato</span>
-                </div>
-                <div class="w-full bg-slate-200 h-2 rounded-full overflow-hidden">
-                    <div id="rank-progress" class="bg-amber-500 h-full w-0 transition-all duration-300"></div>
+                    <span class="text-slate-500">Puntos totales:</span>
+                    <span id="current-score" class="font-bold text-amber-600">0 pts</span>
                 </div>
             </div>
 
@@ -142,7 +133,7 @@
 
             <!-- Panel Hexagonal -->
             <div class="hex-grid" id="hex-container">
-                <!-- Los botones se generan dinámicamente mediante JavaScript -->
+                <!-- Generado por JS -->
             </div>
 
             <!-- Controles de acción (Borrar, Mezclar, Enviar) -->
@@ -158,10 +149,9 @@
                 </button>
             </div>
 
-            <!-- ESPACIO ADSENSE INTERMEDIO (In-Article o Banner Cuadrado) -->
+            <!-- ESPACIO ADSENSE INTERMEDIO -->
             <div class="w-full max-w-md mt-4">
                 <div class="ad-container rounded-xl p-4 text-xs uppercase tracking-wider">
-                    <!-- PEGA AQUÍ TU BLOQUE DE ANUNCIOS DE GOOGLE ADSENSE -->
                     <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-xxxxxxxxxxxxxxxx" data-ad-slot="0987654321" data-ad-format="auto" data-full-width-responsive="true"></ins> <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
                     [ Espacio Publicitario Google AdSense - Bloque Intermedio ]
                 </div>
@@ -171,16 +161,16 @@
 
     </main>
 
-    <!-- Modal de Ayuda / Reglas -->
+    <!-- Modal de Ayuda -->
     <div id="help-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl space-y-4">
             <h3 class="text-xl font-black text-slate-900">¿Cómo jugar a Palabrejo?</h3>
             <ul class="space-y-2 text-sm text-slate-600 list-disc pl-4">
-                <li>Forma palabras de al menos **4 letras**.</li>
-                <li>Cada palabra debe incluir obligatoriamente la **letra central** (marcada en color ámbar).</li>
+                <li>Forma cualquier palabra de al menos **4 letras**.</li>
+                <li>Cada palabra debe incluir obligatoriamente la **letra central** (en ámbar).</li>
                 <li>Puedes repetir las letras tantas veces como quieras.</li>
-                <li>Cada día hay un nuevo reto con una combinación única de 7 letras.</li>
-                <li>¡Encuentra el **Pangrama** (la palabra que usa las 7 letras del panel) para conseguir bonificaciones!</li>
+                <li>El panel cambia cada día de forma automática para todos.</li>
+                <li>¡Consigue un **Pangrama** usando las 7 letras del panel para ganar puntos extra!</li>
             </ul>
             <button onclick="cerrarAyuda()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl text-sm hover:bg-indigo-700 transition">¡Entendido!</button>
         </div>
@@ -188,29 +178,20 @@
 
     <!-- Pie de página -->
     <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-center text-xs text-slate-500">
-        <p>&copy; 2026 Palabrejo. Inspirado en el clásico de las 7 letras.</p>
+        <p>&copy; 2026 Palabrejo. Libertad total de palabras.</p>
     </footer>
 
-    <!-- LÓGICA DEL JUEGO EN JAVASCRIPT -->
+    <!-- LÓGICA DEL JUEGO -->
     <script>
-        // Base de datos simulada de retos diarios basada en la fecha del sistema
-        // Cada reto contiene: las 7 letras (la primera es la central obligatoria) y la lista de palabras válidas permitidas.
+        // Retos diarios basados en la fecha (7 letras: la primera es la central obligatoria)
         const retosDiarios = [
-            {
-                letras: ['A', 'C', 'E', 'I', 'N', 'P', 'R'],
-                palabrasValidas: ['CAPITAN', 'PATICA', 'PATIN', 'PIARA', 'RINA', 'PARCA', 'PANCA', 'PECANA', 'PAPI', 'ACENA', 'ACER', 'ACIANO', 'AERA', 'ARCA', 'AREA', 'ARIA', 'CAPA', 'CARA', 'CARTA', 'CENA', 'CERA', 'CIELO', 'CITA', 'CRANE', 'CREA', 'CREAR', 'NAPA', 'PARA', 'PENA', 'PERA', 'PICEA', 'PINA', 'PIRCA', 'RANA', 'RARA', 'RINA']
-            },
-            {
-                letras: ['O', 'A', 'C', 'D', 'E', 'L', 'P'],
-                palabrasValidas: ['COLPLE', 'ACOPLE', 'ACEDO', 'ALDEA', 'ALEDO', 'CALDO', 'CEDRO', 'COPLA', 'DADO', 'DALE', 'LADO', 'LAGO', 'LOCA', 'LODO', 'PALE', 'PALA', 'PALEA', 'PALLA', 'PLACA', 'PODAR', 'POLA']
-            },
-            {
-                letras: ['E', 'A', 'B', 'D', 'L', 'M', 'T'],
-                palabrasValidas: ['AMABLE', 'BALDE', 'BATEA', 'BEMOL', 'BLETA', 'DATIL', 'DEBATE', 'MALEZA', 'MANTA', 'MATE', 'MELADA', 'METAL', 'TABLA', 'TALEA', 'TAME', 'TELAS']
-            }
+            { letras: ['A', 'C', 'E', 'I', 'N', 'P', 'R'] },
+            { letras: ['O', 'A', 'C', 'D', 'E', 'L', 'P'] },
+            { letras: ['E', 'A', 'B', 'D', 'L', 'M', 'T'] },
+            { letras: ['S', 'A', 'C', 'E', 'I', 'L', 'N'] },
+            { letras: ['R', 'A', 'C', 'D', 'O', 'P', 'T'] }
         ];
 
-        // Seleccionar el reto del día basado en la fecha actual (asegura el mismo reto para todos los jugadores)
         function obtenerRetoDiario() {
             const hoy = new Date().toDateString();
             let hash = 0;
@@ -227,20 +208,14 @@
         
         let palabraActual = "";
         let palabrasEncontradas = new Set();
+        let puntuacionTotal = 0;
 
-        // Mostrar fecha actual formateada
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-        // Inicializar el tablero hexagonal
         function inicializarTablero() {
             const container = document.getElementById('hex-container');
             container.innerHTML = '';
-
-            // Disposición de clases para el grid hexagonal (h-1 a h-7)
-            // H4 es la central
-            const ordenIndices = [1, 2, 4, 3, 5, 6, 7]; // Distribución visual simulada
             
-            // Reordenamos visualmente poniendo la central en el centro exacto (h-4)
             let extIndex = 0;
             for(let i = 1; i <= 7; i++) {
                 const btn = document.createElement('button');
@@ -255,7 +230,7 @@
                 }
 
                 btn.innerText = letra;
-                btn.onclick = () => añadirLetra(letra);
+                btn.onclick = () => anyadirLetra(letra);
                 container.appendChild(btn);
             }
         }
@@ -271,7 +246,6 @@
         }
 
         function mezclarLetras() {
-            // Mezclar aleatoriamente las letras exteriores
             for (let i = letrasExteriores.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [letrasExteriores[i], letrasExteriores[j]] = [letrasExteriores[j], letrasExteriores[i]];
@@ -295,7 +269,7 @@
         function enviarPalabra() {
             const palabra = palabraActual.toUpperCase();
 
-            // Validaciones
+            // 1. Validar longitud mínima
             if (palabra.length < 4) {
                 mostrarMensaje("Mínimo 4 letras");
                 palabraActual = "";
@@ -303,38 +277,49 @@
                 return;
             }
 
+            // 2. Validar obligatoriedad de la letra central
             if (!palabra.includes(letraCentral)) {
-                mostrarMensaje("Falta la letra central");
+                mostrarMensaje("Falta la letra central (" + letraCentral + ")");
                 palabraActual = "";
                 actualizarPantallaInput();
                 return;
             }
 
-            if (palabrasEncontradas.has(palabra)) {
-                mostrarMensaje("Ya encontrada");
-                palabraActual = "";
-                actualizarPantallaInput();
-                return;
-            }
-
-            // Comprobar si es válida en la base de datos del reto
-            if (retoActual.palabrasValidas.includes(palabra)) {
-                palabrasEncontradas.add(palabra);
-                
-                // Comprobar si es pangrama (usa todas las 7 letras)
-                const usaTodas = retoActual.letras.every(l => palabra.includes(l));
-                
-                if (usaTodas) {
-                    mostrarMensaje("¡EXCELENTE! ¡PANGRAMA!", "pangram");
-                } else {
-                    mostrarMensaje("¡Muy bien!", "success");
+            // 3. Validar que solo usa las letras permitidas del panel
+            const letrasPermitidas = retoActual.letras;
+            for (let i = 0; i < palabra.length; i++) {
+                if (!letrasPermitidas.includes(palabra[i])) {
+                    mostrarMensaje("Letra no permitida: " + palabra[i]);
+                    palabraActual = "";
+                    actualizarPantallaInput();
+                    return;
                 }
-
-                actualizarListaPalabras();
-                actualizarProgreso();
-            } else {
-                mostrarMensaje("No está en la lista");
             }
+
+            // 4. Validar si ya ha sido encontrada
+            if (palabrasEncontradas.has(palabra)) {
+                mostrarMensaje("Ya la has encontrado");
+                palabraActual = "";
+                actualizarPantallaInput();
+                return;
+            }
+
+            // ¡Aceptada sin restricciones artificiales!
+            palabrasEncontradas.add(palabra);
+
+            // Calcular puntos (4 letras = 1 punto, más de 4 = tantas puntos como letras, pangrama extra +7 pts)
+            let puntosPalabra = palabra.length === 4 ? 1 : palabra.length;
+            const usaTodas = retoActual.letras.every(l => palabra.includes(l));
+            
+            if (usaTodas) {
+                puntosPalabra += 7;
+                mostrarMensaje("¡EXCELENTE! ¡PANGRAMA (+7 pts)!", "pangram");
+            } else {
+                mostrarMensaje("¡Correcto! +" + puntosPalabra + " pts", "success");
+            }
+
+            puntuacionTotal += puntosPalabra;
+            actualizarListaPalabras();
 
             palabraActual = "";
             actualizarPantallaInput();
@@ -346,6 +331,8 @@
 
             if (palabrasEncontradas.size === 0) {
                 listContainer.innerHTML = '<span class="text-slate-400 text-xs italic w-full text-center py-4">Aún no has encontrado ninguna palabra.</span>';
+                document.getElementById('word-count').innerText = "0";
+                document.getElementById('current-score').innerText = "0 pts";
                 return;
             }
 
@@ -356,23 +343,8 @@
                 listContainer.appendChild(span);
             });
 
-            document.getElementById('word-count').innerText = `${palabrasEncontradas.size} / ${retoActual.palabrasValidas.length}`;
-        }
-
-        function actualizarProgreso() {
-            const total = retoActual.palabrasValidas.length;
-            const encontradas = palabrasEncontradas.size;
-            const porcentaje = (encontradas / total) * 100;
-
-            document.getElementById('rank-progress').style.width = `${porcentaje}%`;
-
-            let rango = "Novato";
-            if (porcentaje > 10) rango = "Aprendiz";
-            if (porcentaje > 30) rango = "Bueno";
-            if (porcentaje > 60) rango = "Excelente";
-            if (porcentaje >= 95) rango = "¡TUTO!";
-
-            document.getElementById('current-rank').innerText = rango;
+            document.getElementById('word-count').innerText = palabrasEncontradas.size;
+            document.getElementById('current-score').innerText = puntuacionTotal + " pts";
         }
 
         function mostrarAyuda() {
@@ -383,12 +355,14 @@
             document.getElementById('help-modal').classList.add('hidden');
         }
 
-        // Event listener para teclado físico (opcional y cómodo)
+        // Event listener para teclado físico (Permite escribir y pulsar Enter cómodamente)
         window.addEventListener('keydown', (e) => {
-            if (e.key >= 'a' && e.key <= 'z' || e.key >= 'A' && e.key <= 'Z') {
-                const letra = e.key.toUpperCase();
-                if (retoActual.letras.includes(letra)) {
-                    anyadirLetra(letra);
+            if (document.getElementById('help-modal').classList.contains('hidden') === false) return;
+            
+            const tecla = e.key.toUpperCase();
+            if (tecla.length === 1 && tecla >= 'A' && tecla <= 'Z') {
+                if (retoActual.letras.includes(tecla)) {
+                    anyadirLetra(tecla);
                 }
             } else if (e.key === 'Backspace') {
                 borrarLetra();
@@ -397,7 +371,6 @@
             }
         });
 
-        // Inicializar al cargar la página
         window.onload = () => {
             inicializarTablero();
             actualizarListaPalabras();
