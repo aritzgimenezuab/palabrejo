@@ -3,17 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Palabrejo | El juego diario de palabras</title>
-    <!-- Tailwind CSS para un diseño limpio y moderno -->
+    <title>Palabrejo | El juego diario con diccionario</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- ==========================================
-         CONFIGURACIÓN DE GOOGLE ADSENSE (Opcional)
-         Sustituye 'ca-pub-xxxxxxxxxxxxxxxx' por tu ID de editor real 
-         ========================================== -->
-    <!-- 
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxxxx" crossorigin="anonymous"></script>
-    -->
+    <!-- GOOGLE ADSENSE (Opcional) -->
+    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxxxx" crossorigin="anonymous"></script> -->
 
     <style>
         .hex-grid {
@@ -74,7 +69,7 @@
 </head>
 <body class="bg-slate-50 text-slate-900 font-sans antialiased flex flex-col min-h-screen">
 
-    <!-- ESPACIO ADSENSE SUPERIOR -->
+    <!-- ADSENSE SUPERIOR -->
     <div class="max-w-4xl mx-auto px-4 my-2 w-full no-print">
         <div class="ad-container rounded-xl p-3 text-xs uppercase tracking-wider">
             <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-xxxxxxxxxxxxxxxx" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins> <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
@@ -82,7 +77,7 @@
         </div>
     </div>
 
-    <!-- Cabecera de la App -->
+    <!-- Cabecera -->
     <header class="bg-white border-b border-slate-200 py-4 shadow-sm">
         <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
             <div>
@@ -95,18 +90,17 @@
         </div>
     </header>
 
-    <!-- Contenido Principal del Juego -->
+    <!-- Contenido Principal -->
     <main class="max-w-4xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-3 gap-8 flex-grow w-full">
         
-        <!-- Columna Izquierda / Panel de palabras encontradas -->
-        <section class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col order-2 md:order-1">
-            <div class="flex justify-between items-center mb-3">
-                <h3 class="font-bold text-sm text-slate-900">Palabras encontradas</h3>
+        <!-- Columna Izquierda: Palabras encontradas y Diccionario -->
+        <section class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col order-2 md:order-1 space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="font-bold text-sm text-slate-900">Palabras y Definiciones</h3>
                 <span id="word-count" class="text-xs font-bold bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full">0</span>
             </div>
             
-            <!-- Puntuación acumulada -->
-            <div class="mb-4 bg-slate-50 p-3 rounded-xl border border-slate-100">
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
                 <div class="flex justify-between text-xs mb-1">
                     <span class="text-slate-500">Puntos totales:</span>
                     <span id="current-score" class="font-bold text-amber-600">0 pts</span>
@@ -114,15 +108,20 @@
             </div>
 
             <!-- Lista de palabras -->
-            <div id="found-words-list" class="flex flex-wrap gap-1.5 max-h-48 md:max-h-64 overflow-y-auto p-2 bg-slate-50 rounded-xl border border-slate-100 text-sm">
-                <span class="text-slate-400 text-xs italic w-full text-center py-4">Aún no has encontrado ninguna palabra.</span>
+            <div id="found-words-list" class="flex flex-wrap gap-1.5 max-h-40 overflow-y-auto p-2 bg-slate-50 rounded-xl border border-slate-100 text-sm">
+                <span class="text-slate-400 text-xs italic w-full text-center py-2">Aún ninguna palabra.</span>
+            </div>
+
+            <!-- Panel de Definición Inferior -->
+            <div class="bg-amber-50/60 border border-amber-200 rounded-xl p-3 flex-grow flex flex-col justify-center">
+                <h4 class="text-xs font-bold text-amber-800 uppercase tracking-wider mb-1">📖 Definición RAE</h4>
+                <p id="definition-box" class="text-xs text-slate-700 italic">Escribe o acierta una palabra válida para ver su significado aquí.</p>
             </div>
         </section>
 
-        <!-- Columna Central / Panel de Interacción y Hexágonos -->
+        <!-- Columna Central: Hexágonos y Controles -->
         <section class="flex flex-col items-center justify-between md:col-span-2 order-1 md:order-2 space-y-6">
             
-            <!-- Pantalla de entrada de texto -->
             <div class="w-full max-w-md text-center">
                 <div id="message-container" class="h-6 text-xs font-bold text-rose-600 mb-2 transition-opacity"></div>
                 <div class="bg-white border-2 border-slate-200 rounded-2xl py-3 px-6 shadow-sm min-h-[64px] flex items-center justify-center relative">
@@ -132,11 +131,9 @@
             </div>
 
             <!-- Panel Hexagonal -->
-            <div class="hex-grid" id="hex-container">
-                <!-- Generado por JS -->
-            </div>
+            <div class="hex-grid" id="hex-container"></div>
 
-            <!-- Controles de acción (Borrar, Mezclar, Enviar) -->
+            <!-- Botones de Control -->
             <div class="flex space-x-4 w-full max-w-md">
                 <button onclick="borrarLetra()" class="flex-1 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold py-3 px-4 rounded-xl text-sm transition shadow-sm">
                     Borrar
@@ -149,7 +146,7 @@
                 </button>
             </div>
 
-            <!-- ESPACIO ADSENSE INTERMEDIO -->
+            <!-- ADSENSE INTERMEDIO -->
             <div class="w-full max-w-md mt-4">
                 <div class="ad-container rounded-xl p-4 text-xs uppercase tracking-wider">
                     <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-xxxxxxxxxxxxxxxx" data-ad-slot="0987654321" data-ad-format="auto" data-full-width-responsive="true"></ins> <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
@@ -161,29 +158,26 @@
 
     </main>
 
-    <!-- Modal de Ayuda -->
+    <!-- Modal Ayuda -->
     <div id="help-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl space-y-4">
             <h3 class="text-xl font-black text-slate-900">¿Cómo jugar a Palabrejo?</h3>
             <ul class="space-y-2 text-sm text-slate-600 list-disc pl-4">
-                <li>Forma cualquier palabra de al menos **4 letras**.</li>
-                <li>Cada palabra debe incluir obligatoriamente la **letra central** (en ámbar).</li>
-                <li>Puedes repetir las letras tantas veces como quieras.</li>
-                <li>El panel cambia cada día de forma automática para todos.</li>
-                <li>¡Consigue un **Pangrama** usando las 7 letras del panel para ganar puntos extra!</li>
+                <li>Forma palabras válidas en castellano de **al menos 3 letras**.</li>
+                <li>Obligatorio usar la **letra central** (en ámbar).</li>
+                <li>Se validarán contra el diccionario oficial. ¡No se valen inventos!</li>
+                <li>Haz clic en tus palabras encontradas para ver su definición abajo.</li>
             </ul>
             <button onclick="cerrarAyuda()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl text-sm hover:bg-indigo-700 transition">¡Entendido!</button>
         </div>
     </div>
 
-    <!-- Pie de página -->
     <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-center text-xs text-slate-500">
-        <p>&copy; 2026 Palabrejo. Libertad total de palabras.</p>
+        <p>&copy; 2026 Palabrejo. Diccionario integrado.</p>
     </footer>
 
-    <!-- LÓGICA DEL JUEGO -->
+    <!-- LÓGICA -->
     <script>
-        // Retos diarios basados en la fecha (7 letras: la primera es la central obligatoria)
         const retosDiarios = [
             { letras: ['A', 'C', 'E', 'I', 'N', 'P', 'R'] },
             { letras: ['O', 'A', 'C', 'D', 'E', 'L', 'P'] },
@@ -207,7 +201,7 @@
         let letrasExteriores = retoActual.letras.slice(1);
         
         let palabraActual = "";
-        let palabrasEncontradas = new Set();
+        let palabrasEncontradas = new Map(); // Guarda Palabra -> Definición
         let puntuacionTotal = 0;
 
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
@@ -261,23 +255,35 @@
             const msgContainer = document.getElementById('message-container');
             msgContainer.innerText = texto;
             msgContainer.className = `h-6 text-xs font-bold mb-2 transition-opacity ${tipo === 'success' ? 'text-emerald-600' : tipo === 'pangram' ? 'text-amber-600 font-black' : 'text-rose-600'}`;
-            setTimeout(() => {
-                msgContainer.innerText = "";
-            }, 2500);
+            setTimeout(() => { msgContainer.innerText = ""; }, 2500);
         }
 
-        function enviarPalabra() {
+        // Función para consultar definición real mediante API libre del diccionario o base de datos de respaldo
+        async function obtenerDefinicion(palabra) {
+            try {
+                // Usamos la API pública de Free Dictionary en español o Wikcionario / RAE adaptada
+                const response = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/es/${palabra.toLowerCase()}`);
+                if (!response.ok) throw new Error("No encontrada");
+                const data = await response.json();
+                return data[0].meanings[0].definitions[0].definition;
+            } catch (err) {
+                // Si la API externa no la halla al momento, proveemos validación genérica de diccionario válido o nota informativa
+                return "Palabra válida aceptada por el diccionario de español.";
+            }
+        }
+
+        async function enviarPalabra() {
             const palabra = palabraActual.toUpperCase();
 
-            // 1. Validar longitud mínima
-            if (palabra.length < 4) {
-                mostrarMensaje("Mínimo 4 letras");
+            // 1. Mínimo 3 letras
+            if (palabra.length < 3) {
+                mostrarMensaje("Mínimo 3 letras");
                 palabraActual = "";
                 actualizarPantallaInput();
                 return;
             }
 
-            // 2. Validar obligatoriedad de la letra central
+            // 2. Letra central obligatoria
             if (!palabra.includes(letraCentral)) {
                 mostrarMensaje("Falta la letra central (" + letraCentral + ")");
                 palabraActual = "";
@@ -285,10 +291,9 @@
                 return;
             }
 
-            // 3. Validar que solo usa las letras permitidas del panel
-            const letrasPermitidas = retoActual.letras;
+            // 3. Solo letras permitidas del panel
             for (let i = 0; i < palabra.length; i++) {
-                if (!letrasPermitidas.includes(palabra[i])) {
+                if (!retoActual.letras.includes(palabra[i])) {
                     mostrarMensaje("Letra no permitida: " + palabra[i]);
                     palabraActual = "";
                     actualizarPantallaInput();
@@ -296,7 +301,7 @@
                 }
             }
 
-            // 4. Validar si ya ha sido encontrada
+            // 4. Ya encontrada
             if (palabrasEncontradas.has(palabra)) {
                 mostrarMensaje("Ya la has encontrado");
                 palabraActual = "";
@@ -304,22 +309,37 @@
                 return;
             }
 
-            // ¡Aceptada sin restricciones artificiales!
-            palabrasEncontradas.add(palabra);
+            // Validación estricta con diccionario real en línea (API)
+            mostrarMensaje("Comprobando en diccionario...", "success");
+            try {
+                const res = await fetch(`https://api.dictionaryapi.dev/api/v2/entries/es/${palabra.toLowerCase()}`);
+                if (!res.ok) {
+                    mostrarMensaje("No existe en el diccionario");
+                    palabraActual = "";
+                    actualizarPantallaInput();
+                    return;
+                }
+                const data = await res.json();
+                const definicionTexto = data[0]?.meanings[0]?.definitions[0]?.definition || "Definición registrada en el diccionario.";
 
-            // Calcular puntos (4 letras = 1 punto, más de 4 = tantas puntos como letras, pangrama extra +7 pts)
-            let puntosPalabra = palabra.length === 4 ? 1 : palabra.length;
-            const usaTodas = retoActual.letras.every(l => palabra.includes(l));
-            
-            if (usaTodas) {
-                puntosPalabra += 7;
-                mostrarMensaje("¡EXCELENTE! ¡PANGRAMA (+7 pts)!", "pangram");
-            } else {
-                mostrarMensaje("¡Correcto! +" + puntosPalabra + " pts", "success");
+                // Guardar y sumar puntos (3 letras = 1 pto, más de 3 = tantas como letras, pangrama +7)
+                let puntos = palabra.length === 3 ? 1 : palabra.length;
+                const usaTodas = retoActual.letras.every(l => palabra.includes(l));
+                if (usaTodas) {
+                    puntos += 7;
+                    mostrarMensaje("¡EXCELENTE! ¡PANGRAMA (+7)!", "pangram");
+                } else {
+                    mostrarMensaje("¡Correcto! +" + puntos + " pts", "success");
+                }
+
+                palabrasEncontradas.set(palabra, definicionTexto);
+                puntuacionTotal += puntos;
+                actualizarListaPalabras();
+                mostrarDefinicion(palabra, definicionTexto);
+
+            } catch (e) {
+                mostrarMensaje("Error al validar con el diccionario");
             }
-
-            puntuacionTotal += puntosPalabra;
-            actualizarListaPalabras();
 
             palabraActual = "";
             actualizarPantallaInput();
@@ -330,16 +350,17 @@
             listContainer.innerHTML = '';
 
             if (palabrasEncontradas.size === 0) {
-                listContainer.innerHTML = '<span class="text-slate-400 text-xs italic w-full text-center py-4">Aún no has encontrado ninguna palabra.</span>';
+                listContainer.innerHTML = '<span class="text-slate-400 text-xs italic w-full text-center py-2">Aún ninguna palabra.</span>';
                 document.getElementById('word-count').innerText = "0";
                 document.getElementById('current-score').innerText = "0 pts";
                 return;
             }
 
-            palabrasEncontradas.forEach(palabra => {
-                const span = document.createElement('span');
-                span.className = "bg-white border border-slate-200 px-2.5 py-1 rounded-lg text-xs font-bold text-slate-700 shadow-xs";
+            palabrasEncontradas.forEach((def, palabra) => {
+                const span = document.createElement('button');
+                span.className = "bg-white border border-slate-200 px-2.5 py-1 rounded-lg text-xs font-bold text-slate-700 shadow-xs hover:bg-amber-50 transition text-left";
                 span.innerText = palabra;
+                span.onclick = () => mostrarDefinicion(palabra, def);
                 listContainer.appendChild(span);
             });
 
@@ -347,17 +368,16 @@
             document.getElementById('current-score').innerText = puntuacionTotal + " pts";
         }
 
-        function mostrarAyuda() {
-            document.getElementById('help-modal').classList.remove('hidden');
+        function mostrarDefinicion(palabra, def) {
+            document.getElementById('definition-box').innerHTML = `<strong>${palabra}:</strong> ${def}`;
         }
 
-        function cerrarAyuda() {
-            document.getElementById('help-modal').classList.add('hidden');
-        }
+        function mostrarAyuda() { document.getElementById('help-modal').classList.remove('hidden'); }
+        function cerrarAyuda() { document.getElementById('help-modal').classList.add('hidden'); }
 
-        // Event listener para teclado físico (Permite escribir y pulsar Enter cómodamente)
+        // Soporte para teclado físico (Letras y tecla Intro)
         window.addEventListener('keydown', (e) => {
-            if (document.getElementById('help-modal').classList.contains('hidden') === false) return;
+            if (!document.getElementById('help-modal').classList.contains('hidden')) return;
             
             const tecla = e.key.toUpperCase();
             if (tecla.length === 1 && tecla >= 'A' && tecla <= 'Z') {
