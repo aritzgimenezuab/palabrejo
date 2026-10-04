@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Palabrejo / Paraulògic | El joc diari</title>
+    <title>Palabrejo | El juego diario de palabras</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
@@ -11,7 +11,7 @@
     <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxxxx" crossorigin="anonymous"></script> -->
 
     <style>
-        /* Disseny Hexagonal Real: 6 lletres al voltant de la central */
+        /* Diseño Hexagonal Real: 6 letras alrededor de la central */
         .hex-board {
             display: flex;
             flex-direction: column;
@@ -81,49 +81,49 @@
         </div>
     </div>
 
-    <!-- Capçalera -->
+    <!-- Cabecera -->
     <header class="bg-white border-b border-slate-200 py-4 shadow-sm">
         <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
             <div>
                 <h1 class="text-2xl font-black tracking-tight text-slate-900">PALABREJO</h1>
-                <p id="current-date" class="text-xs text-slate-500 font-medium">Reto diari</p>
+                <p id="current-date" class="text-xs text-slate-500 font-medium">Reto diario</p>
             </div>
             <div class="flex items-center space-x-2">
-                <button onclick="mostrarAjuda()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition">Com jugar</button>
+                <button onclick="mostrarAyuda()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition">Cómo jugar</button>
             </div>
         </div>
     </header>
 
-    <!-- Contingut Principal -->
+    <!-- Contenido Principal -->
     <main class="max-w-4xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-3 gap-8 flex-grow w-full">
         
-        <!-- Columna Esquerra: Paraules trobades i Puntuació -->
+        <!-- Columna Izquierda: Palabras encontradas y Puntuación -->
         <section class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col order-2 md:order-1 space-y-4">
             <div class="flex justify-between items-center">
-                <h3 class="font-bold text-sm text-slate-900">Paraules trobades</h3>
+                <h3 class="font-bold text-sm text-slate-900">Palabras encontradas</h3>
                 <span id="word-count" class="text-xs font-bold bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full">0</span>
             </div>
             
             <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
                 <div class="flex justify-between text-xs mb-1">
-                    <span class="text-slate-500">Punts totals:</span>
+                    <span class="text-slate-500">Puntos totales:</span>
                     <span id="current-score" class="font-bold text-amber-600">0 pts</span>
                 </div>
             </div>
 
-            <!-- Llista de paraules -->
+            <!-- Lista de palabras -->
             <div id="found-words-list" class="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto p-2 bg-slate-50 rounded-xl border border-slate-100 text-sm">
-                <span class="text-slate-400 text-xs italic w-full text-center py-2">Encara cap paraula.</span>
+                <span class="text-slate-400 text-xs italic w-full text-center py-2">Aún ninguna palabra.</span>
             </div>
 
-            <!-- Panell de Definició / Detall -->
+            <!-- Panel de Definición / Detall -->
             <div class="bg-amber-50/60 border border-amber-200 rounded-xl p-3 flex-grow flex flex-col justify-center">
-                <h4 class="text-xs font-bold text-amber-800 uppercase tracking-wider mb-1">📖 Informació</h4>
-                <p id="definition-box" class="text-xs text-slate-700 italic">Escriu paraules vàlides segons la normativa (DIEC).</p>
+                <h4 class="text-xs font-bold text-amber-800 uppercase tracking-wider mb-1">📖 Información</h4>
+                <p id="definition-box" class="text-xs text-slate-700 italic">Escribe palabras válidas según la normativa de la RAE.</p>
             </div>
         </section>
 
-        <!-- Columna Central: Tauler Hexagonal i Controls -->
+        <!-- Columna Central: Tablero Hexagonal y Controles -->
         <section class="flex flex-col items-center justify-between md:col-span-2 order-1 md:order-2 space-y-6">
             
             <div class="w-full max-w-md text-center">
@@ -134,18 +134,18 @@
                 </div>
             </div>
 
-            <!-- Tauler Hexagonal (Envoltant la central) -->
+            <!-- Tablero Hexagonal -->
             <div class="hex-board" id="hex-container"></div>
 
-            <!-- Botons de Control -->
+            <!-- Botones de Control -->
             <div class="flex space-x-4 w-full max-w-md">
-                <button onclick="borrarLletra()" class="flex-1 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold py-3 px-4 rounded-xl text-sm transition shadow-sm">
-                    Esborrar
+                <button onclick="borrarLetra()" class="flex-1 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold py-3 px-4 rounded-xl text-sm transition shadow-sm">
+                    Borrar
                 </button>
-                <button onclick="barrejarLletres()" class="flex-1 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold py-3 px-4 rounded-xl text-sm transition shadow-sm">
-                    Barrejar 🔀
+                <button onclick="mezclarLetras()" class="flex-1 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold py-3 px-4 rounded-xl text-sm transition shadow-sm">
+                    Mezclar 🔀
                 </button>
-                <button onclick="enviarParaula()" class="flex-2 bg-slate-900 hover:bg-indigo-600 text-white font-bold py-3 px-6 rounded-xl text-sm transition shadow-md">
+                <button onclick="enviarPalabra()" class="flex-2 bg-slate-900 hover:bg-indigo-600 text-white font-bold py-3 px-6 rounded-xl text-sm transition shadow-md">
                     Entrar ↵
                 </button>
             </div>
@@ -162,63 +162,71 @@
 
     </main>
 
-    <!-- Modal d'Ajuda / Normes -->
+    <!-- Modal de Ayuda / Normas -->
     <div id="help-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <h3 class="text-xl font-black text-slate-900">Com jugar i normes</h3>
+            <h3 class="text-xl font-black text-slate-900">Cómo jugar y normas</h3>
             <ul class="space-y-2 text-sm text-slate-600 list-disc pl-4">
-                <li>Cal formar paraules amb les lletres del panell. Les lletres es poden repetir.</li>
-                <li>La **lletra del mig** (en ámbar) és obligatòria.</li>
-                <li>Les paraules han de tenir un **mínim de 3 lletres**.</li>
-                <li>Dels verbs només s'admeten els infinitius. Dels noms i adjectius, la forma masculina i femenina (no plurals).</li>
-                <li>Només paraules del DIEC (Diccionari de la llengua catalana). Res de noms propis ni locucions llatines.</li>
-                <li>**Punts:** 3 lletres = 1 pt. 4 lletres = 2 pts. A partir de 5 lletres = tants punts com lletres.</li>
-                <li>**Tuti:** Si utilitzes totes les 7 lletres en una paraula, guanyes **10 punts extra**!</li>
+                <li>Forma palabras con estas letras. Las letras se pueden repetir.</li>
+                <li>La **letra del medio** (en ámbar) es obligatoria.</li>
+                <li>Las palabras deben tener un **mínimo de 3 letras**.</li>
+                <li>De los verbos solo se admiten los infinitivos (no formas conjugadas). De los nombres y adjetivos se admiten masculino y femenino (no plurales).</li>
+                <li>No se admiten nombres propios ni locuciones latinas; solo palabras del Diccionario de la Real Academia Española (RAE).</li>
+                <li>**Puntuación:** 3 letras = 1 punto. 4 letras = 2 puntos. A partir de 5 letras, tantos puntos como letras tenga la palabra.</li>
+                <li>**¡Tuti / Pangrama!** Si usas las 7 letras del panel, obtienes **10 puntos extra**.</li>
             </ul>
-            <button onclick="cerrarAyuda()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl text-sm hover:bg-indigo-700 transition">Entès!</button>
+            <button onclick="cerrarAyuda()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl text-sm hover:bg-indigo-700 transition">¡Entendido!</button>
         </div>
     </div>
 
     <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-center text-xs text-slate-500">
-        <p>&copy; 2026 Palabrejo. Guardat automàtic i regles oficials.</p>
+        <p>&copy; 2026 Palabrejo. Diccionario RAE y guardado automático.</p>
     </footer>
 
-    <!-- LÒGICA AMB LOCALSTORAGE I REGLES DEL CATALÀ -->
+    <!-- LÓGICA CON LOCALSTORAGE Y NORMAS RAE -->
     <script>
-        // Retos diaris en català (la primera lletra és la central obligatòria)
-        const retosDiaris = [
+        // Retos diarios en castellano (la primera letra es la central obligatoria)
+        const retosDiarios = [
             { 
-                letras: ['A', 'C', 'E', 'I', 'M', 'P', 'R'],
+                letras: ['A', 'C', 'E', 'I', 'N', 'P', 'R'],
                 diccionario: {
-                    "CAP": "Part superior del cos.",
-                    "MAR": "Massa d'aigua salada.",
-                    "RAM": "Conjunt de flors o branca.",
-                    "CAMA": "Extremitat inferior.",
-                    "MAPA": "Representació geogràfica.",
-                    "PARE": "Progenitor masculí.",
-                    "MARE": "Progenitora femenina.",
-                    "CARRERA": "Fita o via.",
-                    "PARC": "Zona verda d'esbarjo.",
-                    "CAMERA": "Antic aparell o estança.",
-                    "IMPERI": "Estat regit per un emperador.",
-                    "PARAR": "Interrompre el moviment.",
-                    "MIRAR": "Dirigir la vista.",
-                    "REMAR": "Impulsar una embarcació amb rems."
+                    "CAPITAN": "Oficial que manda un barco o compañía.",
+                    "PATINA": "Deslizarse con patines.",
+                    "PIARA": "Manada de cerdos.",
+                    "PARCA": "Muerte o persona sobria.",
+                    "ACENA": "Molino de agua.",
+                    "ARCA": "Caja con tapa.",
+                    "AREA": "Superficie de terreno.",
+                    "CAPA": "Prenda de abrigo.",
+                    "CARA": "Parte anterior de la cabeza.",
+                    "CARTA": "Escrito que se envía.",
+                    "CENA": "Comida de la noche.",
+                    "CERA": "Sustancia de abejas.",
+                    "CITA": "Reunión concertada.",
+                    "CREAR": "Producir algo de la nada.",
+                    "PENA": "Tristeza o castigo.",
+                    "PERA": "Fruto del peral.",
+                    "RANA": "Anfibio sin cola.",
+                    "RARA": "Poco común."
                 }
             },
             { 
-                letras: ['T', 'A', 'C', 'D', 'E', 'L', 'O'],
+                letras: ['O', 'A', 'C', 'D', 'E', 'L', 'P'],
                 diccionario: {
-                    "TACO": "Peça o bocí.",
-                    "TALL": "Acció de tallar.",
-                    "LADRE": "Persona que roba.",
-                    "COL": "Hortalissa de fulles.",
-                    "DALT": "Part superior.",
-                    "TARR": "Territori.",
-                    "LLET": "Líquid blanc segregat per mamífers.",
-                    "DADA": "Informació sobre alguna cosa.",
-                    "TALLAR": "Dividir amb eina tallant.",
-                    "TOL": "Tol·lerància o paciència."
+                    "ACOPLE": "Acción de acoplar.",
+                    "ACEDO": "Desagradable al gusto.",
+                    "ALDEA": "Población rural pequeña.",
+                    "CALDO": "Líquido que se cuece con alimentos.",
+                    "CEDRO": "Árbol conífero.",
+                    "COPLA": "Composición poética.",
+                    "DADO": "Pieza cúbica para juegos.",
+                    "LADO": "Línea que limita una figura.",
+                    "LAGO": "Extensión de agua estancada.",
+                    "LOCA": "Que ha perdido la razón.",
+                    "LODO": "Tierra fangosa.",
+                    "PALA": "Herramienta para cavar.",
+                    "PLACA": "Lámina fina.",
+                    "PODAR": "Cortar ramas."
                 }
             }
         ];
@@ -229,8 +237,8 @@
             for (let i = 0; i < hoy.length; i++) {
                 hash = hoy.charCodeAt(i) + ((hash << 5) - hash);
             }
-            const index = Math.abs(hash) % retosDiaris.length;
-            return retosDiaris[index];
+            const index = Math.abs(hash) % retosDiarios.length;
+            return retosDiarios[index];
         }
 
         const retoActual = obtenerRetoDiario();
@@ -240,10 +248,9 @@
         let palabraActual = "";
         let palabrasEncontradas = new Map();
         let puntuacionTotal = 0;
-        const claveStorage = "palabrejo_progrese_" + new Date().toDateString();
+        const claveStorage = "palabrejo_esp_progrese_" + new Date().toDateString();
 
-        // Carregar progrés guardat del navegador (LocalStorage)
-        function carregarProgrese() {
+        function cargarProgreso() {
             const guardat = localStorage.getItem(claveStorage);
             if (guardat) {
                 try {
@@ -254,8 +261,7 @@
             }
         }
 
-        // Guardar progrés al navegador
-        function guardarProgrese() {
+        function guardarProgreso() {
             const dades = {
                 paraules: Array.from(palabrasEncontradas.entries()),
                 punts: puntuacionTotal
@@ -263,28 +269,24 @@
             localStorage.setItem(claveStorage, JSON.stringify(dades));
         }
 
-        document.getElementById('current-date').innerText = new Date().toLocaleDateString('ca-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+        document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-        // Generar tauler hexagonal clàssic (3 a dalt, 2 a mig amb central al mig, 3 a baix envoltants)
         function inicializarTablero() {
             const container = document.getElementById('hex-container');
             container.innerHTML = '';
 
-            // Fila superior (3 lletres)
             const fila1 = document.createElement('div');
             fila1.className = 'hex-row';
             fila1.appendChild(crearBotonHex(letrasExteriores[0]));
             fila1.appendChild(crearBotonHex(letrasExteriores[1]));
             fila1.appendChild(crearBotonHex(letrasExteriores[2]));
 
-            // Fila central (1 exterior + Central + 1 exterior)
             const fila2 = document.createElement('div');
             fila2.className = 'hex-row';
             fila2.appendChild(crearBotonHex(letrasExteriores[3]));
-            fila2.appendChild(crearBotonHex(letraCentral, true)); // Central en ámbar
+            fila2.appendChild(crearBotonHex(letraCentral, true));
             fila2.appendChild(crearBotonHex(letrasExteriores[4]));
 
-            // Fila inferior (1 lletra exterior restant centrada)
             const fila3 = document.createElement('div');
             fila3.className = 'hex-row';
             fila3.appendChild(crearBotonHex(letrasExteriores[5]));
@@ -298,21 +300,21 @@
             const btn = document.createElement('button');
             btn.className = `hex-btn ${esCentral ? 'central' : ''}`;
             btn.innerText = letra;
-            btn.onclick = () => anyadirLletra(letra);
+            btn.onclick = () => anyadirLetra(letra);
             return btn;
         }
 
-        function anyadirLletra(letra) {
+        function anyadirLetra(letra) {
             palabraActual += letra;
             actualizarPantallaInput();
         }
 
-        function borrarLletra() {
+        function borrarLetra() {
             palabraActual = palabraActual.slice(0, -1);
             actualizarPantallaInput();
         }
 
-        function barrejarLletres() {
+        function mezclarLetras() {
             for (let i = letrasExteriores.length - 1; i > 0; i--) {
                 const j = Math.floor(Math.random() * (i + 1));
                 [letrasExteriores[i], letrasExteriores[j]] = [letrasExteriores[j], letrasExteriores[i]];
@@ -335,46 +337,41 @@
             return texto.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
         }
 
-        function enviarParaula() {
+        function enviarPalabra() {
             const palabra = normalizar(palabraActual);
 
-            // 1. Mínim 3 lletres
             if (palabra.length < 3) {
-                mostrarMensaje("Mínim 3 lletres");
+                mostrarMensaje("Mínimo 3 letras");
                 palabraActual = "";
                 actualizarPantallaInput();
                 return;
             }
 
-            // 2. Lletra central obligatòria
             if (!palabra.includes(letraCentral)) {
-                mostrarMensaje("Falta la lletra central (" + letraCentral + ")");
+                mostrarMensaje("Falta la letra central (" + letraCentral + ")");
                 palabraActual = "";
                 actualizarPantallaInput();
                 return;
             }
 
-            // 3. Només lletres permeses del panell
             for (let i = 0; i < palabra.length; i++) {
                 if (!retoActual.letras.includes(palabra[i])) {
-                    mostrarMensaje("Lletra no permesa: " + palabra[i]);
+                    mostrarMensaje("Letra no permitida: " + palabra[i]);
                     palabraActual = "";
                     actualizarPantallaInput();
                     return;
                 }
             }
 
-            // 4. Ja trobada
             if (palabrasEncontradas.has(palabra)) {
-                mostrarMensaje("Ja l'has trobada");
+                mostrarMensaje("Ya la has encontrado");
                 palabraActual = "";
                 actualizarPantallaInput();
                 return;
             }
 
-            // 5. Validació amb diccionari
             if (!retoActual.diccionario[palabra]) {
-                mostrarMensaje("No consta al DIEC o no compleix normes");
+                mostrarMensaje("No consta en la RAE o incumple normas");
                 palabraActual = "";
                 actualizarPantallaInput();
                 return;
@@ -383,24 +380,21 @@
             const definicio = retoActual.diccionario[palabra];
             palabrasEncontradas.set(palabra, definicio);
 
-            // Càlcul de punts exacte segons normes
-            // 3 lletres = 1 pt, 4 lletres = 2 pts, 5+ lletres = tants punts com lletres
             let punts = 0;
             if (palabra.length === 3) punts = 1;
             else if (palabra.length === 4) punts = 2;
             else punts = palabra.length;
 
-            // Comprovar si és un 'tuti' (usa totes 7 lletres) + 10 punts extra
             const esTuti = retoActual.letras.every(l => palabra.includes(l));
             if (esTuti) {
                 punts += 10;
-                mostrarMensaje("¡TUTI! +10 punts extra!", "tuti");
+                mostrarMensaje("¡TUTI! +10 puntos extra", "tuti");
             } else {
-                mostrarMensaje("¡Molt bé! +" + punts + " pts", "success");
+                mostrarMensaje("¡Correcto! +" + punts + " pts", "success");
             }
 
             puntuacionTotal += punts;
-            guardarProgrese();
+            guardarProgreso();
             actualizarListaPalabras();
             mostrarDefinicion(palabra, definicio);
 
@@ -413,7 +407,7 @@
             listContainer.innerHTML = '';
 
             if (palabrasEncontradas.size === 0) {
-                listContainer.innerHTML = '<span class="text-slate-400 text-xs italic w-full text-center py-2">Encara cap paraula.</span>';
+                listContainer.innerHTML = '<span class="text-slate-400 text-xs italic w-full text-center py-2">Aún ninguna palabra.</span>';
                 document.getElementById('word-count').innerText = "0";
                 document.getElementById('current-score').innerText = "0 pts";
                 return;
@@ -435,7 +429,7 @@
             document.getElementById('definition-box').innerHTML = `<strong>${palabra}:</strong> ${def}`;
         }
 
-        function mostrarAjuda() { document.getElementById('help-modal').classList.remove('hidden'); }
+        function mostrarAyuda() { document.getElementById('help-modal').classList.remove('hidden'); }
         function cerrarAyuda() { document.getElementById('help-modal').classList.add('hidden'); }
 
         window.addEventListener('keydown', (e) => {
@@ -444,17 +438,17 @@
             const tecla = e.key.toUpperCase();
             if (tecla.length === 1 && tecla >= 'A' && tecla <= 'Z') {
                 if (retoActual.letras.includes(tecla)) {
-                    anyadirLletra(tecla);
+                    anyadirLetra(tecla);
                 }
             } else if (e.key === 'Backspace') {
-                borrarLletra();
+                borrarLetra();
             } else if (e.key === 'Enter') {
-                enviarParaula();
+                enviarPalabra();
             }
         });
 
         window.onload = () => {
-            carregarProgrese();
+            cargarProgreso();
             inicializarTablero();
             actualizarListaPalabras();
         };
