@@ -11,32 +11,33 @@
     <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxxxx" crossorigin="anonymous"></script> -->
 
     <style>
-        /* Diseño Hexagonal Real: 6 letras alrededor de la central */
-        .hex-board {
+        /* Estética idéntica al modelo de referencia (Panell tipus Paraulògic compacte) */
+        .hex-container {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
             margin: 1.5rem auto;
             position: relative;
-            width: 320px;
-            height: 280px;
+            width: 280px;
+            height: 240px;
         }
         .hex-row {
             display: flex;
             justify-content: center;
-            gap: 12px;
-            margin: -14px 0;
+            gap: 6px;
+            margin: -16px 0;
         }
+        /* Forma hexagonal geométrica suavizada exacta */
         .hex-btn {
-            width: 78px;
-            height: 90px;
-            background-color: #f1f5f9;
+            width: 76px;
+            height: 86px;
+            background-color: #5bc0be; /* Turquesa característico */
             border: none;
-            font-weight: 800;
-            font-size: 1.7rem;
+            font-weight: 700;
+            font-size: 1.8rem;
             text-transform: uppercase;
-            color: #1e293b;
+            color: #ffffff;
             cursor: pointer;
             transition: all 0.15s ease;
             display: flex;
@@ -44,22 +45,42 @@
             justify-content: center;
             user-select: none;
             clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
         .hex-btn:hover {
-            background-color: #e2e8f0;
+            opacity: 0.9;
             transform: translateY(-2px);
         }
         .hex-btn:active {
             transform: scale(0.95);
         }
         .hex-btn.central {
-            background-color: #f59e0b;
+            background-color: #e05343; /* Rojo / Naranja central distintivo */
             color: white;
-            box-shadow: 0 6px 12px rgba(245, 158, 11, 0.3);
+            box-shadow: 0 4px 8px rgba(224, 83, 67, 0.3);
         }
-        .hex-btn.central:hover {
-            background-color: #d97706;
+
+        /* Botones inferiores redondeados estilo app nativa */
+        .action-pill {
+            background-color: #ffffff;
+            border: 2px solid #e2e8f0;
+            color: #1e293b;
+            font-weight: 600;
+            border-radius: 9999px;
+            padding: 0.75rem 1.5rem;
+            font-size: 0.95rem;
+            transition: all 0.15s ease;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .action-pill:hover {
+            border-color: #cbd5e1;
+            background-color: #f8fafc;
+        }
+        .action-pill:active {
+            transform: scale(0.97);
         }
 
         .ad-container {
@@ -71,162 +92,133 @@
         }
     </style>
 </head>
-<body class="bg-slate-50 text-slate-900 font-sans antialiased flex flex-col min-h-screen">
+<body class="bg-white text-slate-900 font-sans antialiased flex flex-col min-h-screen">
 
     <!-- ADSENSE SUPERIOR -->
     <div class="max-w-4xl mx-auto px-4 my-2 w-full no-print">
-        <div class="ad-container rounded-xl p-3 text-xs uppercase tracking-wider">
+        <div class="ad-container rounded-xl p-2 text-xs uppercase tracking-wider">
             <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-xxxxxxxxxxxxxxxx" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins> <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
-            [ Espacio Publicitario Google AdSense - Banner Superior ]
+            [ Espacio Publicitario Google AdSense ]
         </div>
     </div>
 
-    <!-- Cabecera -->
-    <header class="bg-white border-b border-slate-200 py-4 shadow-sm">
-        <div class="max-w-4xl mx-auto px-4 flex items-center justify-between">
-            <div>
-                <h1 class="text-2xl font-black tracking-tight text-slate-900">PALABREJO</h1>
-                <p id="current-date" class="text-xs text-slate-500 font-medium">Reto diario</p>
-            </div>
-            <div class="flex items-center space-x-2">
-                <button onclick="mostrarAyuda()" class="bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-lg text-xs font-bold transition">Cómo jugar</button>
-            </div>
+    <!-- Cabecera Limpia con Logo Estilizado -->
+    <header class="py-6 text-center">
+        <div class="inline-block">
+            <h1 class="text-4xl md:text-5xl font-black tracking-tight text-slate-900 uppercase">
+                PALAB<span class="text-rose-600 inline-block rotate-12">RE</span>JO
+            </h1>
         </div>
+        <p id="current-date" class="text-xs text-slate-400 mt-1 font-medium">Reto diario</p>
     </header>
 
     <!-- Contenido Principal -->
-    <main class="max-w-4xl mx-auto px-4 py-6 grid grid-cols-1 md:grid-cols-3 gap-8 flex-grow w-full">
+    <main class="max-w-3xl mx-auto px-4 py-2 flex-grow w-full flex flex-col items-center space-y-6">
         
-        <!-- Columna Izquierda: Palabras encontradas y Puntuación -->
-        <section class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm flex flex-col order-2 md:order-1 space-y-4">
-            <div class="flex justify-between items-center">
-                <h3 class="font-bold text-sm text-slate-900">Palabras encontradas</h3>
-                <span id="word-count" class="text-xs font-bold bg-amber-100 text-amber-800 px-2.5 py-1 rounded-full">0</span>
+        <!-- Pantalla de entrada de palabra -->
+        <div class="w-full max-w-sm text-center">
+            <div id="message-container" class="h-6 text-xs font-bold text-rose-600 mb-2 transition-opacity"></div>
+            <div class="bg-white border-2 border-slate-200 rounded-2xl py-3 px-6 shadow-xs min-h-[60px] flex items-center justify-center relative">
+                <span id="current-input" class="text-2xl font-black tracking-widest text-slate-800 uppercase min-h-[30px]"></span>
+                <span id="cursor" class="inline-block w-0.5 h-6 bg-rose-500 ml-1 animate-pulse"></span>
             </div>
-            
-            <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
-                <div class="flex justify-between text-xs mb-1">
-                    <span class="text-slate-500">Puntos totales:</span>
-                    <span id="current-score" class="font-bold text-amber-600">0 pts</span>
-                </div>
+        </div>
+
+        <!-- Panel Hexagonal Compacto y Estilizado -->
+        <div class="hex-container" id="hex-container">
+            <!-- Generado dinámicamente -->
+        </div>
+
+        <!-- Botones de Control Inferiores Estilo Píldora -->
+        <div class="flex items-center justify-center space-x-3 w-full max-w-md">
+            <button onclick="borrarLetra()" class="action-pill flex-1">
+                Suprimeix
+            </button>
+            <button onclick="mezclarLetras()" class="action-pill w-14 h-14 !p-0 rounded-full flex items-center justify-center text-xl">
+                🔄
+            </button>
+            <button onclick="enviarPalabra()" class="action-pill flex-1">
+                Introdueix
+            </button>
+        </div>
+
+        <!-- Contador de palabras encontradas -->
+        <div class="text-center pt-2">
+            <p id="words-found-text" class="text-base font-medium text-slate-800">Has trobat 0 paraules.</p>
+        </div>
+
+        <!-- Panel Desplegable de Palabras Encontradas y Puntuación -->
+        <div class="w-full max-w-md bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+            <div class="flex justify-between items-center text-sm font-bold text-slate-700">
+                <span>Puntuación: <span id="current-score" class="text-rose-600">0 pts</span></span>
+                <button onclick="mostrarAyuda()" class="text-xs text-indigo-600 hover:underline">Normas / Ayuda</button>
             </div>
-
-            <!-- Lista de palabras -->
-            <div id="found-words-list" class="flex flex-wrap gap-1.5 max-h-48 overflow-y-auto p-2 bg-slate-50 rounded-xl border border-slate-100 text-sm">
-                <span class="text-slate-400 text-xs italic w-full text-center py-2">Aún ninguna palabra.</span>
+            <div id="found-words-list" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto text-xs font-semibold text-slate-700">
+                <span class="text-slate-400 italic">Ninguna palabra todavía.</span>
             </div>
+        </div>
 
-            <!-- Panel de Definición / Detall -->
-            <div class="bg-amber-50/60 border border-amber-200 rounded-xl p-3 flex-grow flex flex-col justify-center">
-                <h4 class="text-xs font-bold text-amber-800 uppercase tracking-wider mb-1">📖 Información</h4>
-                <p id="definition-box" class="text-xs text-slate-700 italic">Escribe palabras válidas según la normativa de la RAE.</p>
-            </div>
-        </section>
-
-        <!-- Columna Central: Tablero Hexagonal y Controles -->
-        <section class="flex flex-col items-center justify-between md:col-span-2 order-1 md:order-2 space-y-6">
-            
-            <div class="w-full max-w-md text-center">
-                <div id="message-container" class="h-6 text-xs font-bold text-rose-600 mb-2 transition-opacity"></div>
-                <div class="bg-white border-2 border-slate-200 rounded-2xl py-3 px-6 shadow-sm min-h-[64px] flex items-center justify-center relative">
-                    <span id="current-input" class="text-2xl font-black tracking-widest text-slate-800 uppercase min-h-[32px]"></span>
-                    <span id="cursor" class="inline-block w-0.5 h-6 bg-amber-500 ml-1 animate-pulse"></span>
-                </div>
-            </div>
-
-            <!-- Tablero Hexagonal -->
-            <div class="hex-board" id="hex-container"></div>
-
-            <!-- Botones de Control -->
-            <div class="flex space-x-4 w-full max-w-md">
-                <button onclick="borrarLetra()" class="flex-1 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold py-3 px-4 rounded-xl text-sm transition shadow-sm">
-                    Borrar
-                </button>
-                <button onclick="mezclarLetras()" class="flex-1 bg-white border border-slate-300 hover:bg-slate-50 text-slate-700 font-bold py-3 px-4 rounded-xl text-sm transition shadow-sm">
-                    Mezclar 🔀
-                </button>
-                <button onclick="enviarPalabra()" class="flex-2 bg-slate-900 hover:bg-indigo-600 text-white font-bold py-3 px-6 rounded-xl text-sm transition shadow-md">
-                    Entrar ↵
-                </button>
-            </div>
-
-            <!-- ADSENSE INTERMEDIO -->
-            <div class="w-full max-w-md mt-4">
-                <div class="ad-container rounded-xl p-4 text-xs uppercase tracking-wider">
-                    <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-xxxxxxxxxxxxxxxx" data-ad-slot="0987654321" data-ad-format="auto" data-full-width-responsive="true"></ins> <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
-                    [ Espacio Publicitario Google AdSense - Bloque Intermedio ]
-                </div>
-            </div>
-
-        </section>
+        <!-- Pie de navegación secundario (Estilo referencia) -->
+        <div class="text-xs text-slate-500 font-medium pt-4 pb-8 text-center space-x-2">
+            <span>Núm. 1.799</span> &bull; 
+            <span class="cursor-pointer hover:text-slate-900" onclick="mostrarAyuda()">Pistas</span>
+        </div>
 
     </main>
 
-    <!-- Modal de Ayuda / Normas -->
-    <div id="help-modal" class="fixed inset-0 bg-slate-900/50 backdrop-blur-sm z-50 flex items-center justify-center p-4 hidden">
-        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <h3 class="text-xl font-black text-slate-900">Cómo jugar y normas</h3>
+    <!-- Modal de Normas / Ayuda -->
+    <div id="help-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
+        <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
+            <h3 class="text-xl font-black text-slate-900">Normas del juego</h3>
             <ul class="space-y-2 text-sm text-slate-600 list-disc pl-4">
                 <li>Forma palabras con estas letras. Las letras se pueden repetir.</li>
-                <li>La **letra del medio** (en ámbar) es obligatoria.</li>
-                <li>Las palabras deben tener un **mínimo de 3 letras**.</li>
-                <li>De los verbos solo se admiten los infinitivos (no formas conjugadas). De los nombres y adjetivos se admiten masculino y femenino (no plurales).</li>
-                <li>No se admiten nombres propios ni locuciones latinas; solo palabras del Diccionario de la Real Academia Española (RAE).</li>
-                <li>**Puntuación:** 3 letras = 1 punto. 4 letras = 2 puntos. A partir de 5 letras, tantos puntos como letras tenga la palabra.</li>
-                <li>**¡Tuti / Pangrama!** Si usas las 7 letras del panel, obtienes **10 puntos extra**.</li>
+                <li>La **letra del medio** (en rojo) es obligatoria.</li>
+                <li>Mínimo de **3 letras**.</li>
+                <li>De los verbos solo infinitivos; nombres y adjetivos en masculino/femenino (sin plurales).</li>
+                <li>Solo palabras del Diccionario de la RAE.</li>
+                <li>**Puntuación:** 3 letras = 1 pto. 4 letras = 2 ptos. 5+ letras = tantas como letras.</li>
+                <li>**¡Tuti / Pangrama!** Usar las 7 letras da **10 puntos extra**.</li>
             </ul>
-            <button onclick="cerrarAyuda()" class="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl text-sm hover:bg-indigo-700 transition">¡Entendido!</button>
+            <button onclick="cerrarAyuda()" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl text-sm hover:bg-rose-600 transition">Entendido</button>
         </div>
     </div>
 
-    <footer class="bg-white border-t border-slate-200 mt-12 py-6 text-center text-xs text-slate-500">
-        <p>&copy; 2026 Palabrejo. Diccionario RAE y guardado automático.</p>
-    </footer>
-
-    <!-- LÓGICA CON LOCALSTORAGE Y NORMAS RAE -->
+    <!-- LÓGICA COMPLETA -->
     <script>
-        // Retos diarios en castellano (la primera letra es la central obligatoria)
         const retosDiarios = [
             { 
-                letras: ['A', 'C', 'E', 'I', 'N', 'P', 'R'],
+                letras: ['R', 'I', 'J', 'B', 'U', 'L', 'A'], // La primera es la central (B)
                 diccionario: {
-                    "CAPITAN": "Oficial que manda un barco o compañía.",
-                    "PATINA": "Deslizarse con patines.",
-                    "PIARA": "Manada de cerdos.",
-                    "PARCA": "Muerte o persona sobria.",
-                    "ACENA": "Molino de agua.",
-                    "ARCA": "Caja con tapa.",
-                    "AREA": "Superficie de terreno.",
-                    "CAPA": "Prenda de abrigo.",
-                    "CARA": "Parte anterior de la cabeza.",
-                    "CARTA": "Escrito que se envía.",
-                    "CENA": "Comida de la noche.",
-                    "CERA": "Sustancia de abejas.",
-                    "CITA": "Reunión concertada.",
-                    "CREAR": "Producir algo de la nada.",
-                    "PENA": "Tristeza o castigo.",
-                    "PERA": "Fruto del peral.",
-                    "RANA": "Anfibio sin cola.",
-                    "RARA": "Poco común."
+                    "BAUR": "Válida de prueba",
+                    "BURIL": "Instrumento para grabar en metales.",
+                    "LIBRA": "Unidad de peso o signo zodiacal.",
+                    "BURLA": "Acción y efecto de burlar.",
+                    "RUINA": "Destrucción, caída de algo.",
+                    "BALI": "Término geográfico",
+                    "RUI": "Variante dialectal",
+                    "LUBINA": "Pez marino comestible."
                 }
             },
             { 
-                letras: ['O', 'A', 'C', 'D', 'E', 'L', 'P'],
+                letras: ['A', 'C', 'E', 'I', 'N', 'P', 'R'],
                 diccionario: {
-                    "ACOPLE": "Acción de acoplar.",
-                    "ACEDO": "Desagradable al gusto.",
-                    "ALDEA": "Población rural pequeña.",
-                    "CALDO": "Líquido que se cuece con alimentos.",
-                    "CEDRO": "Árbol conífero.",
-                    "COPLA": "Composición poética.",
-                    "DADO": "Pieza cúbica para juegos.",
-                    "LADO": "Línea que limita una figura.",
-                    "LAGO": "Extensión de agua estancada.",
-                    "LOCA": "Que ha perdido la razón.",
-                    "LODO": "Tierra fangosa.",
-                    "PALA": "Herramienta para cavar.",
-                    "PLACA": "Lámina fina.",
-                    "PODAR": "Cortar ramas."
+                    "CAPITAN": "Oficial que manda un barco.",
+                    "PATINA": "Deslizarse con patines.",
+                    "PIARA": "Manada de cerdos.",
+                    "PARCA": "Muerte o sobria.",
+                    "ARCA": "Caja con tapa.",
+                    "AREA": "Superficie.",
+                    "CAPA": "Prenda de abrigo.",
+                    "CARA": "Parte de la cabeza.",
+                    "CARTA": "Escrito.",
+                    "CENA": "Comida nocturna.",
+                    "CERA": "Sustancia.",
+                    "CITA": "Reunión.",
+                    "CREAR": "Producir.",
+                    "PENA": "Tristeza.",
+                    "PERA": "Fruto.",
+                    "RANA": "Anfibio.",
+                    "RARA": "Poco común."
                 }
             }
         ];
@@ -242,13 +234,13 @@
         }
 
         const retoActual = obtenerRetoDiario();
-        const letraCentral = retoActual.letras[0];
-        let letrasExteriores = retoActual.letras.slice(1);
+        const letraCentral = retoActual.letras[0]; // Primera letra es la central (roja)
+        let letrasExteriores = retoActual.letras.slice(1); // Las otras 6
         
         let palabraActual = "";
         let palabrasEncontradas = new Map();
         let puntuacionTotal = 0;
-        const claveStorage = "palabrejo_esp_progrese_" + new Date().toDateString();
+        const claveStorage = "palabrejo_progrese_v2_" + new Date().toDateString();
 
         function cargarProgreso() {
             const guardat = localStorage.getItem(claveStorage);
@@ -271,22 +263,26 @@
 
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
+        // Generar distribución hexagonal exacta (3 arriba, 2 en medio con central, 2 abajo)
         function inicializarTablero() {
             const container = document.getElementById('hex-container');
             container.innerHTML = '';
 
+            // Fila 1 (3 letras)
             const fila1 = document.createElement('div');
             fila1.className = 'hex-row';
             fila1.appendChild(crearBotonHex(letrasExteriores[0]));
             fila1.appendChild(crearBotonHex(letrasExteriores[1]));
             fila1.appendChild(crearBotonHex(letrasExteriores[2]));
 
+            // Fila 2 (1 exterior + Central Roja + 1 exterior)
             const fila2 = document.createElement('div');
             fila2.className = 'hex-row';
             fila2.appendChild(crearBotonHex(letrasExteriores[3]));
-            fila2.appendChild(crearBotonHex(letraCentral, true));
+            fila2.appendChild(crearBotonHex(letraCentral, true)); // Central
             fila2.appendChild(crearBotonHex(letrasExteriores[4]));
 
+            // Fila 3 (1 letra exterior restante centrada simétricamente)
             const fila3 = document.createElement('div');
             fila3.className = 'hex-row';
             fila3.appendChild(crearBotonHex(letrasExteriores[5]));
@@ -329,7 +325,7 @@
         function mostrarMensaje(texto, tipo = 'error') {
             const msgContainer = document.getElementById('message-container');
             msgContainer.innerText = texto;
-            msgContainer.className = `h-6 text-xs font-bold mb-2 transition-opacity ${tipo === 'success' ? 'text-emerald-600' : tipo === 'tuti' ? 'text-amber-600 font-black' : 'text-rose-600'}`;
+            msgContainer.className = `h-6 text-xs font-bold mb-2 transition-opacity ${tipo === 'success' ? 'text-emerald-600' : tipo === 'tuti' ? 'text-rose-600 font-black' : 'text-rose-600'}`;
             setTimeout(() => { msgContainer.innerText = ""; }, 2500);
         }
 
@@ -356,7 +352,7 @@
 
             for (let i = 0; i < palabra.length; i++) {
                 if (!retoActual.letras.includes(palabra[i])) {
-                    mostrarMensaje("Letra no permitida: " + palabra[i]);
+                    mostrarMensaje("Letra no permitida");
                     palabraActual = "";
                     actualizarPantallaInput();
                     return;
@@ -371,7 +367,7 @@
             }
 
             if (!retoActual.diccionario[palabra]) {
-                mostrarMensaje("No consta en la RAE o incumple normas");
+                mostrarMensaje("No está en la lista de válidas");
                 palabraActual = "";
                 actualizarPantallaInput();
                 return;
@@ -396,7 +392,6 @@
             puntuacionTotal += punts;
             guardarProgreso();
             actualizarListaPalabras();
-            mostrarDefinicion(palabra, definicio);
 
             palabraActual = "";
             actualizarPantallaInput();
@@ -406,27 +401,23 @@
             const listContainer = document.getElementById('found-words-list');
             listContainer.innerHTML = '';
 
-            if (palabrasEncontradas.size === 0) {
-                listContainer.innerHTML = '<span class="text-slate-400 text-xs italic w-full text-center py-2">Aún ninguna palabra.</span>';
-                document.getElementById('word-count').innerText = "0";
+            const totalEncontradas = palabrasEncontradas.size;
+            document.getElementById('words-found-text').innerText = `Has trobat ${totalEncontradas} paraules.`;
+
+            if (totalEncontradas === 0) {
+                listContainer.innerHTML = '<span class="text-slate-400 italic">Ninguna palabra todavía.</span>';
                 document.getElementById('current-score').innerText = "0 pts";
                 return;
             }
 
             palabrasEncontradas.forEach((def, palabra) => {
-                const btnItem = document.createElement('button');
-                btnItem.className = "bg-white border border-slate-200 px-2.5 py-1 rounded-lg text-xs font-bold text-slate-700 shadow-xs hover:bg-amber-50 transition text-left";
-                btnItem.innerText = palabra;
-                btnItem.onclick = () => mostrarDefinicion(palabra, def);
-                listContainer.appendChild(btnItem);
+                const badge = document.createElement('span');
+                badge.className = "bg-white border border-slate-200 px-2.5 py-1 rounded-md shadow-2xs font-bold text-slate-700";
+                badge.innerText = palabra;
+                listContainer.appendChild(badge);
             });
 
-            document.getElementById('word-count').innerText = palabrasEncontradas.size;
             document.getElementById('current-score').innerText = puntuacionTotal + " pts";
-        }
-
-        function mostrarDefinicion(palabra, def) {
-            document.getElementById('definition-box').innerHTML = `<strong>${palabra}:</strong> ${def}`;
         }
 
         function mostrarAyuda() { document.getElementById('help-modal').classList.remove('hidden'); }
