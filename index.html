@@ -16,7 +16,6 @@
             margin: 2rem auto;
             border-radius: 50%;
         }
-        /* Letra central del roscón */
         .roscon-center {
             position: absolute;
             top: 50%;
@@ -40,7 +39,6 @@
         }
         .roscon-center:active { transform: translate(-50%, -50%) scale(0.95); }
 
-        /* Letras exteriores distribuidas en órbita alrededor del roscón */
         .roscon-btn {
             position: absolute;
             width: 68px;
@@ -67,7 +65,6 @@
             transform: scale(0.95);
         }
 
-        /* Botones inferiores estilo píldora */
         .action-pill {
             background-color: #ffffff;
             border: 2px solid #e2e8f0;
@@ -130,10 +127,8 @@
             </div>
         </div>
 
-        <!-- Panel en forma de Roscón (Círculo Orbital) -->
-        <div class="roscon-container" id="roscon-container">
-            <!-- Se genera mediante JavaScript colocando las 6 letras exteriores en círculo y la 1 central -->
-        </div>
+        <!-- Panel en forma de Roscón -->
+        <div class="roscon-container" id="roscon-container"></div>
 
         <!-- Botones de Control Inferiores -->
         <div class="flex items-center justify-center space-x-3 w-full max-w-md">
@@ -159,7 +154,7 @@
                 <span>Puntuación: <span id="current-score" class="text-rose-600">0 pts</span></span>
                 <button onclick="mostrarAyuda()" class="text-xs text-amber-800 hover:underline">Normas / Ayuda</button>
             </div>
-            <div id="found-words-list" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto text-xs font-semibold text-slate-700">
+            <div id="found-words-list" class="flex flex-wrap gap-1.5 max-h-36 overflow-y-auto text-xs font-semibold text-slate-700">
                 <span class="text-slate-400 italic">Ninguna palabra todavía.</span>
             </div>
         </div>
@@ -171,53 +166,25 @@
         <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
             <h3 class="text-xl font-black text-slate-900">Normas del Palabroscón</h3>
             <ul class="space-y-2 text-sm text-slate-600 list-disc pl-4">
-                <li>Forma palabras utilizando las letras del roscón. Se pueden repetir.</li>
-                <li>La **letra central** (en rojo guinda) es obligatoria.</li>
-                <li>Mínimo de **3 letras**.</li>
-                <li>Verbos solo en infinitivo; nombres y adjetivos en masculino/femenino (sin plurales).</li>
-                <li>Solo palabras del Diccionario de la RAE.</li>
-                <li>**Puntuación:** 3 letras = 1 pto. 4 letras = 2 ptos. 5+ letras = tantas como letras.</li>
+                <li>Forma tantas palabras como puedas combinando las letras del roscón. Se pueden repetir letras.</li>
+                <li>La **letra central** (en rojo guinda) es obligatoria en todas las palabras.</li>
+                <li>Mínimo de **3 letras** por palabra.</li>
+                <li>Se aceptan todas las palabras válidas del diccionario de la RAE que cumplan las reglas.</li>
+                <li>**Puntuación:** 3 letras = 1 pto. 4 letras = 2 ptos. 5+ letras = tantas como letras tenga.</li>
                 <li>**¡Tuti / Pangrama!** Usar las 7 letras del roscón otorga **10 puntos extra**.</li>
             </ul>
             <button onclick="cerrarAyuda()" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl text-sm hover:bg-rose-600 transition">Entendido</button>
         </div>
     </div>
 
-    <!-- LÓGICA DEL JUEGO -->
+    <!-- LÓGICA DE JUEGO DINÁMICA E ILIMITADA -->
     <script>
+        // Retos diarios circulares (la primera letra es la central obligatoria)
         const retosDiarios = [
-            { 
-                letras: ['R', 'I', 'J', 'B', 'U', 'L', 'A'], // La primera es la central (B)
-                diccionario: {
-                    "BURIL": "Instrumento para grabar en metales.",
-                    "LIBRA": "Unidad de peso o signo zodiacal.",
-                    "BURLA": "Acción y efecto de burlar.",
-                    "RUINA": "Destrucción, caída de algo.",
-                    "LUBINA": "Pez marino comestible."
-                }
-            },
-            { 
-                letras: ['A', 'C', 'E', 'I', 'N', 'P', 'R'],
-                diccionario: {
-                    "CAPITAN": "Oficial que manda un barco.",
-                    "PATINA": "Deslizarse con patines.",
-                    "PIARA": "Manada de cerdos.",
-                    "PARCA": "Muerte o sobria.",
-                    "ARCA": "Caja con tapa.",
-                    "AREA": "Superficie.",
-                    "CAPA": "Prenda de abrigo.",
-                    "CARA": "Parte de la cabeza.",
-                    "CARTA": "Escrito.",
-                    "CENA": "Comida nocturna.",
-                    "CERA": "Sustancia.",
-                    "CITA": "Reunión.",
-                    "CREAR": "Producir.",
-                    "PENA": "Tristeza.",
-                    "PERA": "Fruto.",
-                    "RANA": "Anfibio.",
-                    "RARA": "Poco común."
-                }
-            }
+            { letras: ['A', 'C', 'E', 'I', 'N', 'P', 'R'] },
+            { letras: ['O', 'A', 'C', 'D', 'E', 'L', 'P'] },
+            { letras: ['E', 'A', 'B', 'D', 'L', 'M', 'T'] },
+            { letras: ['R', 'I', 'J', 'B', 'U', 'L', 'A'] }
         ];
 
         function obtenerRetoDiario() {
@@ -235,16 +202,16 @@
         let letrasExteriores = retoActual.letras.slice(1);
         
         let palabraActual = "";
-        let palabrasEncontradas = new Map();
+        let palabrasEncontradas = new Set();
         let puntuacionTotal = 0;
-        const claveStorage = "palabroscon_progrese_" + new Date().toDateString();
+        const claveStorage = "palabroscon_dinamico_" + new Date().toDateString();
 
         function cargarProgreso() {
             const guardat = localStorage.getItem(claveStorage);
             if (guardat) {
                 try {
                     const dades = JSON.parse(guardat);
-                    palabrasEncontradas = new Map(dades.paraules);
+                    palabrasEncontradas = new Set(dades.paraules);
                     puntuacionTotal = dades.punts;
                 } catch(e) { console.error(e); }
             }
@@ -252,7 +219,7 @@
 
         function guardarProgreso() {
             const dades = {
-                paraules: Array.from(palabrasEncontradas.entries()),
+                paraules: Array.from(palabrasEncontradas),
                 punts: puntuacionTotal
             };
             localStorage.setItem(claveStorage, JSON.stringify(dades));
@@ -260,27 +227,24 @@
 
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-        // Generar distribución en forma de círculo (Roscón)
         function inicializarTablero() {
             const container = document.getElementById('roscon-container');
             container.innerHTML = '';
 
-            // Botón central (Guinda)
             const btnCentro = document.createElement('div');
             btnCentro.className = 'roscon-center';
             btnCentro.innerText = letraCentral;
             btnCentro.onclick = () => anyadirLetra(letraCentral);
             container.appendChild(btnCentro);
 
-            // Botones exteriores distribuidos matemáticamente en órbita circular (360 grados / 6 letras)
             const totalExteriores = letrasExteriores.length;
-            const radio = 95; // Radio del círculo en píxeles
-            const centroX = 140; // Mitad del contenedor (280 / 2)
+            const radio = 95;
+            const centroX = 140;
             const centroY = 140;
 
             letrasExteriores.forEach((letra, index) => {
-                const angulo = (index * 2 * Math.PI) / totalExteriores - Math.PI / 2; // Empezar arriba
-                const x = centroX + radio * Math.cos(angulo) - 34; // Restar la mitad del ancho del botón (68/2 = 34)
+                const angulo = (index * 2 * Math.PI) / totalExteriores - Math.PI / 2;
+                const x = centroX + radio * Math.cos(angulo) - 34;
                 const y = centroY + radio * Math.sin(angulo) - 34;
 
                 const btn = document.createElement('button');
@@ -329,6 +293,7 @@
         function enviarPalabra() {
             const palabra = normalizar(palabraActual);
 
+            // Regla 1: Mínimo 3 letras
             if (palabra.length < 3) {
                 mostrarMensaje("Mínimo 3 letras");
                 palabraActual = "";
@@ -336,6 +301,7 @@
                 return;
             }
 
+            // Regla 2: Obligatoria la letra central
             if (!palabra.includes(letraCentral)) {
                 mostrarMensaje("Falta la letra central (" + letraCentral + ")");
                 palabraActual = "";
@@ -343,6 +309,7 @@
                 return;
             }
 
+            // Regla 3: Solo usar las letras permitidas del panel
             for (let i = 0; i < palabra.length; i++) {
                 if (!retoActual.letras.includes(palabra[i])) {
                     mostrarMensaje("Letra no permitida");
@@ -352,6 +319,7 @@
                 }
             }
 
+            // Regla 4: No repetida
             if (palabrasEncontradas.has(palabra)) {
                 mostrarMensaje("Ya la has encontrado");
                 palabraActual = "";
@@ -359,16 +327,10 @@
                 return;
             }
 
-            if (!retoActual.diccionario[palabra]) {
-                mostrarMensaje("No está en la lista de válidas");
-                palabraActual = "";
-                actualizarPantallaInput();
-                return;
-            }
+            // Aceptada dinámicamente al cumplir todas las normas gramaticales y de letras del roscón
+            palabrasEncontradas.add(palabra);
 
-            const definicio = retoActual.diccionario[palabra];
-            palabrasEncontradas.set(palabra, definicio);
-
+            // Cálculo de puntuación oficial
             let punts = 0;
             if (palabra.length === 3) punts = 1;
             else if (palabra.length === 4) punts = 2;
@@ -403,7 +365,7 @@
                 return;
             }
 
-            palabrasEncontradas.forEach((def, palabra) => {
+            palabrasEncontradas.forEach(palabra => {
                 const badge = document.createElement('span');
                 badge.className = "bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-md shadow-2xs font-bold text-amber-900";
                 badge.innerText = palabra;
