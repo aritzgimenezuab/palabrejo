@@ -3,64 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Palabrejo | El juego diario de palabras</title>
+    <title>Palabrejo / Roscón | El juego diario</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    
-    <!-- GOOGLE ADSENSE (Opcional) -->
-    <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-xxxxxxxxxxxxxxxx" crossorigin="anonymous"></script> -->
 
     <style>
-        /* Estética idéntica al modelo de referencia (Panell tipus Paraulògic compacte) */
-        .hex-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            margin: 1.5rem auto;
+        /* Diseño Circular / Roscón */
+        .roscon-container {
             position: relative;
             width: 280px;
-            height: 240px;
+            height: 280px;
+            margin: 2rem auto;
+            border-radius: 50%;
         }
-        .hex-row {
-            display: flex;
-            justify-content: center;
-            gap: 6px;
-            margin: -16px 0;
-        }
-        /* Forma hexagonal geométrica suavizada exacta */
-        .hex-btn {
+        /* Letra central del roscón */
+        .roscon-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
             width: 76px;
-            height: 86px;
-            background-color: #5bc0be; /* Turquesa característico */
-            border: none;
-            font-weight: 700;
+            height: 76px;
+            background-color: #e05343; /* Rojo guinda central */
+            color: white;
+            font-weight: 800;
             font-size: 1.8rem;
-            text-transform: uppercase;
-            color: #ffffff;
-            cursor: pointer;
-            transition: all 0.15s ease;
+            border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
+            box-shadow: 0 4px 10px rgba(224, 83, 67, 0.4);
+            z-index: 10;
+            cursor: pointer;
             user-select: none;
-            clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
-            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: transform 0.15s;
         }
-        .hex-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-2px);
+        .roscon-center:active { transform: translate(-50%, -50%) scale(0.95); }
+
+        /* Letras exteriores distribuidas en órbita alrededor del roscón */
+        .roscon-btn {
+            position: absolute;
+            width: 68px;
+            height: 68px;
+            background-color: #fef3c7; /* Tono masa de roscón / dorado suave */
+            border: 2px solid #f59e0b;
+            color: #78350f;
+            font-weight: 800;
+            font-size: 1.5rem;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            user-select: none;
+            transition: all 0.15s ease;
+            box-shadow: 0 3px 6px rgba(0,0,0,0.08);
         }
-        .hex-btn:active {
+        .roscon-btn:hover {
+            background-color: #fde68a;
+            transform: scale(1.05);
+        }
+        .roscon-btn:active {
             transform: scale(0.95);
         }
-        .hex-btn.central {
-            background-color: #e05343; /* Rojo / Naranja central distintivo */
-            color: white;
-            box-shadow: 0 4px 8px rgba(224, 83, 67, 0.3);
-        }
 
-        /* Botones inferiores redondeados estilo app nativa */
+        /* Botones inferiores estilo píldora */
         .action-pill {
             background-color: #ffffff;
             border: 2px solid #e2e8f0;
@@ -92,24 +99,23 @@
         }
     </style>
 </head>
-<body class="bg-white text-slate-900 font-sans antialiased flex flex-col min-h-screen">
+<body class="bg-amber-50/30 text-slate-900 font-sans antialiased flex flex-col min-h-screen">
 
     <!-- ADSENSE SUPERIOR -->
     <div class="max-w-4xl mx-auto px-4 my-2 w-full no-print">
         <div class="ad-container rounded-xl p-2 text-xs uppercase tracking-wider">
-            <!-- <ins class="adsbygoogle" style="display:block" data-ad-client="ca-pub-xxxxxxxxxxxxxxxx" data-ad-slot="1234567890" data-ad-format="auto" data-full-width-responsive="true"></ins> <script>(adsbygoogle = window.adsbygoogle || []).push({});</script> -->
             [ Espacio Publicitario Google AdSense ]
         </div>
     </div>
 
-    <!-- Cabecera Limpia con Logo Estilizado -->
+    <!-- Cabecera Estilizada -->
     <header class="py-6 text-center">
         <div class="inline-block">
-            <h1 class="text-4xl md:text-5xl font-black tracking-tight text-slate-900 uppercase">
-                PALAB<span class="text-rose-600 inline-block rotate-12">RE</span>JO
+            <h1 class="text-4xl md:text-5xl font-black tracking-tight text-amber-900 uppercase">
+                PALAB<span class="text-rose-600">ROS</span>CÓN
             </h1>
         </div>
-        <p id="current-date" class="text-xs text-slate-400 mt-1 font-medium">Reto diario</p>
+        <p id="current-date" class="text-xs text-amber-700/70 mt-1 font-medium">El roscón de palabras diario</p>
     </header>
 
     <!-- Contenido Principal -->
@@ -118,84 +124,75 @@
         <!-- Pantalla de entrada de palabra -->
         <div class="w-full max-w-sm text-center">
             <div id="message-container" class="h-6 text-xs font-bold text-rose-600 mb-2 transition-opacity"></div>
-            <div class="bg-white border-2 border-slate-200 rounded-2xl py-3 px-6 shadow-xs min-h-[60px] flex items-center justify-center relative">
+            <div class="bg-white border-2 border-amber-200 rounded-2xl py-3 px-6 shadow-xs min-h-[60px] flex items-center justify-center relative">
                 <span id="current-input" class="text-2xl font-black tracking-widest text-slate-800 uppercase min-h-[30px]"></span>
                 <span id="cursor" class="inline-block w-0.5 h-6 bg-rose-500 ml-1 animate-pulse"></span>
             </div>
         </div>
 
-        <!-- Panel Hexagonal Compacto y Estilizado -->
-        <div class="hex-container" id="hex-container">
-            <!-- Generado dinámicamente -->
+        <!-- Panel en forma de Roscón (Círculo Orbital) -->
+        <div class="roscon-container" id="roscon-container">
+            <!-- Se genera mediante JavaScript colocando las 6 letras exteriores en círculo y la 1 central -->
         </div>
 
-        <!-- Botones de Control Inferiores Estilo Píldora -->
+        <!-- Botones de Control Inferiores -->
         <div class="flex items-center justify-center space-x-3 w-full max-w-md">
             <button onclick="borrarLetra()" class="action-pill flex-1">
-                Suprimeix
+                Suprimir
             </button>
             <button onclick="mezclarLetras()" class="action-pill w-14 h-14 !p-0 rounded-full flex items-center justify-center text-xl">
                 🔄
             </button>
             <button onclick="enviarPalabra()" class="action-pill flex-1">
-                Introdueix
+                Introducir
             </button>
         </div>
 
         <!-- Contador de palabras encontradas -->
         <div class="text-center pt-2">
-            <p id="words-found-text" class="text-base font-medium text-slate-800">Has trobat 0 paraules.</p>
+            <p id="words-found-text" class="text-base font-medium text-slate-800">Has encontrado 0 palabras.</p>
         </div>
 
-        <!-- Panel Desplegable de Palabras Encontradas y Puntuación -->
-        <div class="w-full max-w-md bg-slate-50 border border-slate-200 rounded-2xl p-4 space-y-3">
+        <!-- Panel de Palabras Encontradas y Puntuación -->
+        <div class="w-full max-w-md bg-white border border-amber-200 rounded-2xl p-4 space-y-3 shadow-sm">
             <div class="flex justify-between items-center text-sm font-bold text-slate-700">
                 <span>Puntuación: <span id="current-score" class="text-rose-600">0 pts</span></span>
-                <button onclick="mostrarAyuda()" class="text-xs text-indigo-600 hover:underline">Normas / Ayuda</button>
+                <button onclick="mostrarAyuda()" class="text-xs text-amber-800 hover:underline">Normas / Ayuda</button>
             </div>
             <div id="found-words-list" class="flex flex-wrap gap-1.5 max-h-32 overflow-y-auto text-xs font-semibold text-slate-700">
                 <span class="text-slate-400 italic">Ninguna palabra todavía.</span>
             </div>
         </div>
 
-        <!-- Pie de navegación secundario (Estilo referencia) -->
-        <div class="text-xs text-slate-500 font-medium pt-4 pb-8 text-center space-x-2">
-            <span>Núm. 1.799</span> &bull; 
-            <span class="cursor-pointer hover:text-slate-900" onclick="mostrarAyuda()">Pistas</span>
-        </div>
-
     </main>
 
-    <!-- Modal de Normas / Ayuda -->
+    <!-- Modal de Normas -->
     <div id="help-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-xs z-50 flex items-center justify-center p-4 hidden">
         <div class="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl space-y-4 max-h-[90vh] overflow-y-auto">
-            <h3 class="text-xl font-black text-slate-900">Normas del juego</h3>
+            <h3 class="text-xl font-black text-slate-900">Normas del Palabroscón</h3>
             <ul class="space-y-2 text-sm text-slate-600 list-disc pl-4">
-                <li>Forma palabras con estas letras. Las letras se pueden repetir.</li>
-                <li>La **letra del medio** (en rojo) es obligatoria.</li>
+                <li>Forma palabras utilizando las letras del roscón. Se pueden repetir.</li>
+                <li>La **letra central** (en rojo guinda) es obligatoria.</li>
                 <li>Mínimo de **3 letras**.</li>
-                <li>De los verbos solo infinitivos; nombres y adjetivos en masculino/femenino (sin plurales).</li>
+                <li>Verbos solo en infinitivo; nombres y adjetivos en masculino/femenino (sin plurales).</li>
                 <li>Solo palabras del Diccionario de la RAE.</li>
                 <li>**Puntuación:** 3 letras = 1 pto. 4 letras = 2 ptos. 5+ letras = tantas como letras.</li>
-                <li>**¡Tuti / Pangrama!** Usar las 7 letras da **10 puntos extra**.</li>
+                <li>**¡Tuti / Pangrama!** Usar las 7 letras del roscón otorga **10 puntos extra**.</li>
             </ul>
             <button onclick="cerrarAyuda()" class="w-full bg-slate-900 text-white font-bold py-3 rounded-xl text-sm hover:bg-rose-600 transition">Entendido</button>
         </div>
     </div>
 
-    <!-- LÓGICA COMPLETA -->
+    <!-- LÓGICA DEL JUEGO -->
     <script>
         const retosDiarios = [
             { 
                 letras: ['R', 'I', 'J', 'B', 'U', 'L', 'A'], // La primera es la central (B)
                 diccionario: {
-                    "BAUR": "Válida de prueba",
                     "BURIL": "Instrumento para grabar en metales.",
                     "LIBRA": "Unidad de peso o signo zodiacal.",
                     "BURLA": "Acción y efecto de burlar.",
                     "RUINA": "Destrucción, caída de algo.",
-                    "BALI": "Término geográfico",
-                    "RUI": "Variante dialectal",
                     "LUBINA": "Pez marino comestible."
                 }
             },
@@ -234,13 +231,13 @@
         }
 
         const retoActual = obtenerRetoDiario();
-        const letraCentral = retoActual.letras[0]; // Primera letra es la central (roja)
-        let letrasExteriores = retoActual.letras.slice(1); // Las otras 6
+        const letraCentral = retoActual.letras[0];
+        let letrasExteriores = retoActual.letras.slice(1);
         
         let palabraActual = "";
         let palabrasEncontradas = new Map();
         let puntuacionTotal = 0;
-        const claveStorage = "palabrejo_progrese_v2_" + new Date().toDateString();
+        const claveStorage = "palabroscon_progrese_" + new Date().toDateString();
 
         function cargarProgreso() {
             const guardat = localStorage.getItem(claveStorage);
@@ -263,41 +260,37 @@
 
         document.getElementById('current-date').innerText = new Date().toLocaleDateString('es-ES', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
 
-        // Generar distribución hexagonal exacta (3 arriba, 2 en medio con central, 2 abajo)
+        // Generar distribución en forma de círculo (Roscón)
         function inicializarTablero() {
-            const container = document.getElementById('hex-container');
+            const container = document.getElementById('roscon-container');
             container.innerHTML = '';
 
-            // Fila 1 (3 letras)
-            const fila1 = document.createElement('div');
-            fila1.className = 'hex-row';
-            fila1.appendChild(crearBotonHex(letrasExteriores[0]));
-            fila1.appendChild(crearBotonHex(letrasExteriores[1]));
-            fila1.appendChild(crearBotonHex(letrasExteriores[2]));
+            // Botón central (Guinda)
+            const btnCentro = document.createElement('div');
+            btnCentro.className = 'roscon-center';
+            btnCentro.innerText = letraCentral;
+            btnCentro.onclick = () => anyadirLetra(letraCentral);
+            container.appendChild(btnCentro);
 
-            // Fila 2 (1 exterior + Central Roja + 1 exterior)
-            const fila2 = document.createElement('div');
-            fila2.className = 'hex-row';
-            fila2.appendChild(crearBotonHex(letrasExteriores[3]));
-            fila2.appendChild(crearBotonHex(letraCentral, true)); // Central
-            fila2.appendChild(crearBotonHex(letrasExteriores[4]));
+            // Botones exteriores distribuidos matemáticamente en órbita circular (360 grados / 6 letras)
+            const totalExteriores = letrasExteriores.length;
+            const radio = 95; // Radio del círculo en píxeles
+            const centroX = 140; // Mitad del contenedor (280 / 2)
+            const centroY = 140;
 
-            // Fila 3 (1 letra exterior restante centrada simétricamente)
-            const fila3 = document.createElement('div');
-            fila3.className = 'hex-row';
-            fila3.appendChild(crearBotonHex(letrasExteriores[5]));
+            letrasExteriores.forEach((letra, index) => {
+                const angulo = (index * 2 * Math.PI) / totalExteriores - Math.PI / 2; // Empezar arriba
+                const x = centroX + radio * Math.cos(angulo) - 34; // Restar la mitad del ancho del botón (68/2 = 34)
+                const y = centroY + radio * Math.sin(angulo) - 34;
 
-            container.appendChild(fila1);
-            container.appendChild(fila2);
-            container.appendChild(fila3);
-        }
-
-        function crearBotonHex(letra, esCentral = false) {
-            const btn = document.createElement('button');
-            btn.className = `hex-btn ${esCentral ? 'central' : ''}`;
-            btn.innerText = letra;
-            btn.onclick = () => anyadirLetra(letra);
-            return btn;
+                const btn = document.createElement('button');
+                btn.className = 'roscon-btn';
+                btn.style.left = `${x}px`;
+                btn.style.top = `${y}px`;
+                btn.innerText = letra;
+                btn.onclick = () => anyadirLetra(letra);
+                container.appendChild(btn);
+            });
         }
 
         function anyadirLetra(letra) {
@@ -325,7 +318,7 @@
         function mostrarMensaje(texto, tipo = 'error') {
             const msgContainer = document.getElementById('message-container');
             msgContainer.innerText = texto;
-            msgContainer.className = `h-6 text-xs font-bold mb-2 transition-opacity ${tipo === 'success' ? 'text-emerald-600' : tipo === 'tuti' ? 'text-rose-600 font-black' : 'text-rose-600'}`;
+            msgContainer.className = `h-6 text-xs font-bold mb-2 transition-opacity ${tipo === 'success' ? 'text-emerald-600' : 'text-rose-600'}`;
             setTimeout(() => { msgContainer.innerText = ""; }, 2500);
         }
 
@@ -384,7 +377,7 @@
             const esTuti = retoActual.letras.every(l => palabra.includes(l));
             if (esTuti) {
                 punts += 10;
-                mostrarMensaje("¡TUTI! +10 puntos extra", "tuti");
+                mostrarMensaje("¡TUTI! +10 puntos extra", "success");
             } else {
                 mostrarMensaje("¡Correcto! +" + punts + " pts", "success");
             }
@@ -402,7 +395,7 @@
             listContainer.innerHTML = '';
 
             const totalEncontradas = palabrasEncontradas.size;
-            document.getElementById('words-found-text').innerText = `Has trobat ${totalEncontradas} paraules.`;
+            document.getElementById('words-found-text').innerText = `Has encontrado ${totalEncontradas} palabras.`;
 
             if (totalEncontradas === 0) {
                 listContainer.innerHTML = '<span class="text-slate-400 italic">Ninguna palabra todavía.</span>';
@@ -412,7 +405,7 @@
 
             palabrasEncontradas.forEach((def, palabra) => {
                 const badge = document.createElement('span');
-                badge.className = "bg-white border border-slate-200 px-2.5 py-1 rounded-md shadow-2xs font-bold text-slate-700";
+                badge.className = "bg-amber-50 border border-amber-200 px-2.5 py-1 rounded-md shadow-2xs font-bold text-amber-900";
                 badge.innerText = palabra;
                 listContainer.appendChild(badge);
             });
